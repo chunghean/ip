@@ -1,4 +1,4 @@
-# BingusDingus User Guide
+# Bingus Dingus User Guide
 
 // Product screenshot goes here
 
