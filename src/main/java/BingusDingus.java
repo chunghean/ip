@@ -30,8 +30,7 @@ public class BingusDingus {
             else if (command.equals("list")) {
                 System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < textCount; i++) {
-                    System.out.println((i + 1) + ".[" + taskList[i].getStatusIcon() + "] "
-                            + taskList[i].getDescription());
+                    System.out.println((i + 1) + ". " + taskList[i]);
                 }
                 System.out.println("-".repeat(30));
             }
@@ -70,9 +69,45 @@ public class BingusDingus {
                     continue;
                 }
 
-                taskList[textCount] = new Task(command);
+                boolean validTaskCommand = true;
+
+                if (command.startsWith("todo ")) {
+                    String taskDescription = command.substring(4).trim();
+                    taskList[textCount] = new Todo(taskDescription);
+                } else if (command.startsWith("deadline ")) {
+                    String taskDetails = command.substring(9).trim();
+                    String[] parts = taskDetails.split("/by", 2);
+                    if (parts.length != 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
+                        validTaskCommand = false;
+                    } else {
+                        taskList[textCount] = new Deadline(parts[0].trim(), parts[1].trim());
+                    }
+                } else if (command.startsWith("event ")) {
+                    String taskDetails = command.substring(6).trim();
+                    String[] fromParts = taskDetails.split("/from", 2);
+                    String[] toParts = fromParts.length == 2 ? fromParts[1].split("/to", 2) : new String[0];
+                    if (fromParts.length != 2 || toParts.length != 2
+                            || fromParts[0].trim().isEmpty() || toParts[0].trim().isEmpty()
+                            || toParts[1].trim().isEmpty()) {
+                        validTaskCommand = false;
+                    } else {
+                        taskList[textCount] = new Event(fromParts[0].trim(), toParts[0].trim(), toParts[1].trim());
+                    }
+                } else {
+                    validTaskCommand = false;
+                }
+
+                if (!validTaskCommand) {
+                    System.out.println("Sorry, I could not understand that task command.");
+                    System.out.println("Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.");
+                    System.out.println("-".repeat(30));
+                    continue;
+                }
+
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  " + taskList[textCount]);
                 textCount++;
-                System.out.println("added: " + command);
+                System.out.println("Now you have " + textCount + " tasks in the list.");
                 System.out.println("-".repeat(30));
             }
         }
