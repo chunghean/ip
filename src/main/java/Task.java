@@ -1,7 +1,7 @@
 /** Represents a task in the task list. */
 public class Task {
-    protected String description;
-    protected boolean isDone;
+    private final String description;
+    private boolean isDone;
 
     /** Creates an incomplete task. */
     public Task(String description) {
@@ -17,6 +17,10 @@ public class Task {
     /** Marks the task as not done. */
     public void markAsNotDone() {
         isDone = false;
+    }
+
+    public boolean isDone() {
+        return this.isDone;
     }
 
     /** Returns the task's display status icon. */

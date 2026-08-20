@@ -48,7 +48,7 @@ public class BingusDingus {
                         System.out.println("Nice! I've marked this task as done:");
                         System.out.println("  [X] " + taskList[taskIndex].getDescription());
                     } else {
-                        if (!taskList[taskIndex].isDone) {
+                        if (!taskList[taskIndex].isDone()) {
                             System.out.println("That task has not been marked done yet");
                         }
                         else {
