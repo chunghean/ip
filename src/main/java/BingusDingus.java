@@ -15,18 +15,20 @@ public class BingusDingus {
         System.out.println("-".repeat(30));
 
         TaskList taskList = new TaskList();
+        Parser parser = new Parser();
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
+            CommandType commandType = parser.parseCommandType(command);
 
-            if (command.equals("bye")) {
+            if (commandType == CommandType.BYE) {
                 System.out.println("Bye bye!");
                 System.out.println("-".repeat(30));
                 break;
             }
 
-            else if (command.equals("list")) {
+            else if (commandType == CommandType.LIST) {
                 System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < taskList.size(); i++) {
                     System.out.println((i + 1) + ". " + taskList.get(i));
@@ -34,8 +36,8 @@ public class BingusDingus {
                 System.out.println("-".repeat(30));
             }
 
-            else if (command.startsWith("mark ") || command.startsWith("unmark ")) {
-                boolean markingDone = command.startsWith("mark ");
+            else if (commandType == CommandType.MARK || commandType == CommandType.UNMARK) {
+                boolean markingDone = commandType == CommandType.MARK;
                 String taskNumberText = command.substring(markingDone ? 5 : 7).trim();
                 try {
                     int taskIndex = Integer.parseInt(taskNumberText) - 1;
@@ -66,7 +68,7 @@ public class BingusDingus {
                 System.out.println("-".repeat(30));
             }
 
-            else if (command.startsWith("delete ")) {
+            else if (commandType == CommandType.DELETE) {
                 String taskNumberText = command.substring(7).trim();
                 try {
                     int taskIndex = Integer.parseInt(taskNumberText) - 1;
@@ -84,9 +86,9 @@ public class BingusDingus {
                 System.out.println("-".repeat(30));
             }
 
-            else {
+            else if (commandType == CommandType.TASK) {
                 try {
-                    taskList.add(createTask(command));
+                    taskList.add(parser.parseTask(command));
                 } catch (InvalidTaskCommandException e) {
                     System.out.println(e.getMessage());
                     System.out.println("Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.");
@@ -99,38 +101,13 @@ public class BingusDingus {
                 System.out.println("Now you have " + taskList.size() + " tasks in the list.");
                 System.out.println("-".repeat(30));
             }
+
+            else {
+                System.out.println("I've got no idea watchu talkin' about");
+                System.out.println("Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.");
+                System.out.println("-".repeat(30));
+            }
         }
     }
 
-    /** Parses a task command and creates the corresponding task subtype. */
-    private static Task createTask(String command) throws InvalidTaskCommandException {
-        if (command.startsWith("todo ")) {
-            String description = command.substring(5).trim();
-            if (description.isEmpty()) {
-                throw new InvalidTaskCommandException("what todo?");
-            }
-            return new Todo(description);
-        }
-
-        if (command.startsWith("deadline ")) {
-            String[] parts = command.substring(9).trim().split("/by", 2);
-            if (parts.length != 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-                throw new InvalidTaskCommandException("Deadline requires a description and a date");
-            }
-            return new Deadline(parts[0].trim(), parts[1].trim());
-        }
-
-        if (command.startsWith("event ")) {
-            String[] fromParts = command.substring(6).trim().split("/from", 2);
-            String[] toParts = fromParts.length == 2 ? fromParts[1].split("/to", 2) : new String[0];
-            if (fromParts.length != 2 || toParts.length != 2
-                    || fromParts[0].trim().isEmpty() || toParts[0].trim().isEmpty()
-                    || toParts[1].trim().isEmpty()) {
-                throw new InvalidTaskCommandException("Event requires a description, start, and end");
-            }
-            return new Event(fromParts[0].trim(), toParts[0].trim(), toParts[1].trim());
-        }
-
-        throw new InvalidTaskCommandException("I've got no idea watchu talkin' about");
-    }
 }
