@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class BingusDingus {
     public static void main(String[] args) {
@@ -15,7 +14,7 @@ public class BingusDingus {
         System.out.println("How can I help ya?");
         System.out.println("-".repeat(30));
 
-        ArrayList<Task> taskList = new ArrayList<>();
+        TaskList taskList = new TaskList();
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
