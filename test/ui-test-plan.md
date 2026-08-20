@@ -61,3 +61,55 @@ Now you have 1 tasks in the list.
 Bye bye!
 ------------------------------
 ```
+
+## Test case 3: Reject malformed task commands
+
+Aim: Verify that malformed todo, deadline, event, and unknown commands are handled without terminating the application or adding tasks.
+
+Inputs:
+
+```text
+todo
+deadline return book
+event project meeting /from Mon 2pm
+unknown command
+list
+bye
+```
+
+Expected output for each malformed command:
+
+```text
+I've got no idea watchu talkin' about
+Todo description cannot be empty
+Deadline requires a description and a date
+Event requires a description, start, and end
+Unknown task command
+Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
+```
+
+The `list` command should show no tasks.
+
+## Test case 4: Handle invalid task numbers
+
+Aim: Verify that non-numeric and out-of-range task numbers are rejected without crashing.
+
+Inputs:
+
+```text
+todo buy milk
+mark abc
+mark 2
+unmark 0
+unmark 1
+bye
+```
+
+Expected output:
+
+```text
+Sorry, please specify a valid task number.
+Sorry, that task number is invalid.
+Sorry, that task number is invalid.
+That task has not been marked done yet
+```
