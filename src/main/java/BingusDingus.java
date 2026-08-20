@@ -2,20 +2,10 @@ import java.util.Scanner;
 
 public class BingusDingus {
     public static void main(String[] args) {
-        String banner = "        .-\"\"\"\"-.\n"
-                + "       /  o  o  \\\n"
-                + "      |    ∆     |     BINGUS\n"
-                + "      |  \\___/   |     DINGUS\n"
-                + "       \\        /\n"
-                + "        '-.__.-'";
-        System.out.println(banner);
-        System.out.println("-".repeat(30));
-        System.out.println("Hey there, I'm Bingus Dingusss.");
-        System.out.println("How can I help ya?");
-        System.out.println("-".repeat(30));
-
         TaskList taskList = new TaskList();
         Parser parser = new Parser();
+        Ui ui = new Ui();
+        ui.showWelcome();
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
@@ -23,17 +13,12 @@ public class BingusDingus {
             CommandType commandType = parser.parseCommandType(command);
 
             if (commandType == CommandType.BYE) {
-                System.out.println("Bye bye!");
-                System.out.println("-".repeat(30));
+                ui.showGoodbye();
                 break;
             }
 
             else if (commandType == CommandType.LIST) {
-                System.out.println("Here are the tasks in your list:");
-                for (int i = 0; i < taskList.size(); i++) {
-                    System.out.println((i + 1) + ". " + taskList.get(i));
-                }
-                System.out.println("-".repeat(30));
+                ui.showTasks(taskList);
             }
 
             else if (commandType == CommandType.MARK || commandType == CommandType.UNMARK) {
@@ -42,30 +27,28 @@ public class BingusDingus {
                 try {
                     int taskIndex = Integer.parseInt(taskNumberText) - 1;
                     if (taskIndex < 0 || taskIndex >= taskList.size()) {
-                        System.out.println("Sorry, that task number is invalid.");
+                        ui.showInvalidTaskNumber();
                     } else if (markingDone) {
                         if (taskList.get(taskIndex).isDone()) {
-                            System.out.println("That task has already been marked done");
+                            ui.showTaskAlreadyDone();
                         }
                         else {
                             taskList.get(taskIndex).markAsDone();
-                            System.out.println("Nice! I've marked this task as done:");
-                            System.out.println(taskList.get(taskIndex).toString());
+                            ui.showTaskMarkedDone(taskList.get(taskIndex));
                         }
                     } else {
                         if (!taskList.get(taskIndex).isDone()) {
-                            System.out.println("That task has not been marked done yet");
+                            ui.showTaskNotDone();
                         }
                         else {
                             taskList.get(taskIndex).markAsNotDone();
-                            System.out.println("OK, I've marked this task as not done yet:");
-                            System.out.println(taskList.get(taskIndex).toString());
+                            ui.showTaskMarkedNotDone(taskList.get(taskIndex));
                         }
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("Sorry, please specify a valid task number.");
+                    ui.showInvalidTaskNumberFormat();
                 }
-                System.out.println("-".repeat(30));
+                ui.showSeparator();
             }
 
             else if (commandType == CommandType.DELETE) {
@@ -73,39 +56,29 @@ public class BingusDingus {
                 try {
                     int taskIndex = Integer.parseInt(taskNumberText) - 1;
                     if (taskIndex < 0 || taskIndex >= taskList.size()) {
-                        System.out.println("Sorry, that task number is invalid.");
+                        ui.showInvalidTaskNumber();
                     } else {
                         String deletedDescription = taskList.remove(taskIndex).getDescription();
-                        System.out.println("I've removed this task:");
-                        System.out.println("  " + deletedDescription);
-                        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+                        ui.showTaskDeleted(deletedDescription, taskList.size());
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("Sorry, please specify a valid task number.");
+                    ui.showInvalidTaskNumberFormat();
                 }
-                System.out.println("-".repeat(30));
             }
 
             else if (commandType == CommandType.TASK) {
                 try {
                     taskList.add(parser.parseTask(command));
                 } catch (InvalidTaskCommandException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.");
-                    System.out.println("-".repeat(30));
+                    ui.showInvalidCommand(e.getMessage());
                     continue;
                 }
 
-                System.out.println("Got it. I've added this task:");
-                System.out.println("  " + taskList.get(taskList.size() - 1));
-                System.out.println("Now you have " + taskList.size() + " tasks in the list.");
-                System.out.println("-".repeat(30));
+                ui.showTaskAdded(taskList.get(taskList.size() - 1), taskList.size());
             }
 
             else {
-                System.out.println("I've got no idea watchu talkin' about");
-                System.out.println("Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.");
-                System.out.println("-".repeat(30));
+                ui.showInvalidCommand("I've got no idea watchu talkin' about");
             }
         }
     }
