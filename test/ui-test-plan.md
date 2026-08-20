@@ -113,3 +113,32 @@ Sorry, that task number is invalid.
 Sorry, that task number is invalid.
 That task has not been marked done yet
 ```
+
+## Test case 5: Delete a task
+
+Aim: Verify that deleting a task removes it and shifts the remaining task numbers.
+
+Inputs:
+
+```text
+todo buy milk
+todo return book
+delete 1
+list
+bye
+```
+
+Expected output for the deletion and list commands:
+
+```text
+------------------------------
+I've removed this task:
+  buy milk
+Now you have 1 tasks in the list.
+------------------------------
+Here are the tasks in your list:
+1. [T][ ] return book
+------------------------------
+Bye bye!
+------------------------------
+```
