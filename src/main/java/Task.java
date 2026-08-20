@@ -19,6 +19,7 @@ public class Task {
         isDone = false;
     }
 
+    /** Returns whether this task has been completed. */
     public boolean isDone() {
         return this.isDone;
     }

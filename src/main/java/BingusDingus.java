@@ -1,6 +1,8 @@
 import java.util.Scanner;
 
+/** Runs the Bingus Dingus command-line task manager. */
 public class BingusDingus {
+    /** Starts the application and processes commands entered by the user. */
     public static void main(String[] args) {
         TaskList taskList = new TaskList();
         Parser parser = new Parser();
