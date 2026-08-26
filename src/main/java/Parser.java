@@ -8,6 +8,10 @@ public class Parser {
      * @return the command type
      */
     public CommandType parseCommandType(String command) {
+        if (command == null) {
+            return CommandType.UNKNOWN;
+        }
+
         if (command.equals("bye")) {
             return CommandType.BYE;
         } else if (command.equals("list")) {
@@ -35,6 +39,10 @@ public class Parser {
      * @throws InvalidTaskCommandException if the command is invalid
      */
     public Task parseTask(String command) throws InvalidTaskCommandException {
+        if (command == null) {
+            throw new InvalidTaskCommandException("I've got no idea watchu talkin' about");
+        }
+
         if (command.startsWith("todo ")) {
             String description = command.substring(5).trim();
             if (description.isEmpty()) {

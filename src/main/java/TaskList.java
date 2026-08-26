@@ -19,8 +19,16 @@ public class TaskList {
 
     /** Adds a task to the end of the list. */
     public void add(Task task) {
+        if (task == null) {
+            throw new IllegalArgumentException("Cannot add a null task");
+        }
         tasks.add(task);
-        save();
+        try {
+            save();
+        } catch (IllegalStateException e) {
+            tasks.remove(tasks.size() - 1);
+            throw e;
+        }
     }
 
     /** Returns the task at the specified zero-based index. */
@@ -31,20 +39,43 @@ public class TaskList {
     /** Removes and returns the task at the specified zero-based index. */
     public Task remove(int index) {
         Task removedTask = tasks.remove(index);
-        save();
+        try {
+            save();
+        } catch (IllegalStateException e) {
+            tasks.add(index, removedTask);
+            throw e;
+        }
         return removedTask;
     }
 
     /** Marks the task at the specified zero-based index as done and saves the list. */
     public void markAsDone(int index) {
-        tasks.get(index).markAsDone();
-        save();
+        Task task = tasks.get(index);
+        boolean wasDone = task.isDone();
+        task.markAsDone();
+        try {
+            save();
+        } catch (IllegalStateException e) {
+            if (!wasDone) {
+                task.markAsNotDone();
+            }
+            throw e;
+        }
     }
 
     /** Marks the task at the specified zero-based index as not done and saves the list. */
     public void markAsNotDone(int index) {
-        tasks.get(index).markAsNotDone();
-        save();
+        Task task = tasks.get(index);
+        boolean wasDone = task.isDone();
+        task.markAsNotDone();
+        try {
+            save();
+        } catch (IllegalStateException e) {
+            if (wasDone) {
+                task.markAsDone();
+            }
+            throw e;
+        }
     }
 
     /** Returns the number of tasks in the list. */
@@ -65,7 +96,7 @@ public class TaskList {
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING,
                     StandardOpenOption.WRITE);
-        } catch (IOException e) {
+        } catch (IOException | SecurityException e) {
             throw new IllegalStateException("Unable to save tasks to " + STORAGE_PATH, e);
         }
     }
@@ -76,27 +107,40 @@ public class TaskList {
             return;
         }
 
+        ArrayList<Task> loadedTasks = new ArrayList<>();
         try {
             for (String line : Files.readAllLines(STORAGE_PATH, StandardCharsets.UTF_8)) {
                 Task task = parseStoredTask(line);
                 if (task != null) {
-                    tasks.add(task);
+                    loadedTasks.add(task);
                 }
             }
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to load tasks from " + STORAGE_PATH, e);
+            tasks.addAll(loadedTasks);
+        } catch (IOException | SecurityException e) {
+            // A damaged or inaccessible storage file should not prevent startup.
+            tasks.clear();
         }
     }
 
     /** Parses one stored task line, returning null for malformed lines. */
     private Task parseStoredTask(String line) {
-        String[] parts = line.split("\\s*\\|\\s*", -1);
-        if (parts.length < 3 || (!parts[1].equals("0") && !parts[1].equals("1"))) {
+        if (line == null || line.isBlank()) {
             return null;
         }
 
+        String[] parts = line.split("\\|", -1);
+        if (parts.length < 3 || (!parts[1].trim().equals("0") && !parts[1].trim().equals("1"))) {
+            return null;
+        }
+
+        String type = parts[0].trim().replace("\uFEFF", "");
+        String status = parts[1].trim();
+        for (int i = 2; i < parts.length; i++) {
+            parts[i] = parts[i].trim();
+        }
+
         Task task;
-        switch (parts[0]) {
+        switch (type) {
         case "T":
             task = parts.length == 3 && !parts[2].isBlank() ? new Todo(parts[2]) : null;
             break;
@@ -112,7 +156,7 @@ public class TaskList {
             task = null;
         }
 
-        if (task != null && parts[1].equals("1")) {
+        if (task != null && status.equals("1")) {
             task.markAsDone();
         }
         return task;

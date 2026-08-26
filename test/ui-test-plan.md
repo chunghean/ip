@@ -289,3 +289,47 @@ Here are the tasks in your list:
 Bye bye!
 ------------------------------
 ```
+
+## Test case 8: Ignore malformed stored tasks
+
+Aim: Verify that invalid storage records do not crash startup or prevent valid tasks from loading.
+
+Setup: Replace `data/bingusdingus.txt` with:
+
+```text
+T | 1 | valid todo
+malformed record
+D | 0 | valid deadline | Tomorrow
+E | 1 | valid event | Monday | Tuesday
+X | 0 | unknown type
+T | 2 | invalid status
+```
+
+Inputs:
+
+```text
+list
+bye
+```
+
+Expected output:
+
+```text
+        .-""""-.
+       /  o  o  \
+      |    ∆     |     BINGUS
+      |  \___/   |     DINGUS
+       \        /
+        '-.__.-'
+------------------------------
+Hey there, I'm Bingus Dingusss.
+How can I help ya?
+------------------------------
+Here are the tasks in your list:
+1. [T][X] valid todo
+2. [D][ ] valid deadline (by: Tomorrow)
+3. [E][X] valid event (from: Monday to: Tuesday)
+------------------------------
+Bye bye!
+------------------------------
+```

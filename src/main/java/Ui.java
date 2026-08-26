@@ -86,6 +86,12 @@ public class Ui {
         showSeparator();
     }
 
+    /** Displays an error when the task list cannot be saved. */
+    public void showStorageError() {
+        System.out.println("I couldn't save your tasks. Your latest change was not kept.");
+        showSeparator();
+    }
+
     /** Displays a separator between interactions. */
     public void showSeparator() {
         System.out.println("-".repeat(30));
