@@ -14,6 +14,7 @@ public class TaskList {
     /** Creates an empty task list. */
     public TaskList() {
         tasks = new ArrayList<>();
+        load();
     }
 
     /** Adds a task to the end of the list. */
@@ -67,5 +68,53 @@ public class TaskList {
         } catch (IOException e) {
             throw new IllegalStateException("Unable to save tasks to " + STORAGE_PATH, e);
         }
+    }
+
+    /** Loads valid tasks from the storage file when it exists. */
+    private void load() {
+        if (!Files.exists(STORAGE_PATH)) {
+            return;
+        }
+
+        try {
+            for (String line : Files.readAllLines(STORAGE_PATH, StandardCharsets.UTF_8)) {
+                Task task = parseStoredTask(line);
+                if (task != null) {
+                    tasks.add(task);
+                }
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to load tasks from " + STORAGE_PATH, e);
+        }
+    }
+
+    /** Parses one stored task line, returning null for malformed lines. */
+    private Task parseStoredTask(String line) {
+        String[] parts = line.split("\\s*\\|\\s*", -1);
+        if (parts.length < 3 || (!parts[1].equals("0") && !parts[1].equals("1"))) {
+            return null;
+        }
+
+        Task task;
+        switch (parts[0]) {
+        case "T":
+            task = parts.length == 3 && !parts[2].isBlank() ? new Todo(parts[2]) : null;
+            break;
+        case "D":
+            task = parts.length == 4 && !parts[2].isBlank() && !parts[3].isBlank()
+                    ? new Deadline(parts[2], parts[3]) : null;
+            break;
+        case "E":
+            task = parts.length == 5 && !parts[2].isBlank() && !parts[3].isBlank() && !parts[4].isBlank()
+                    ? new Event(parts[2], parts[3], parts[4]) : null;
+            break;
+        default:
+            task = null;
+        }
+
+        if (task != null && parts[1].equals("1")) {
+            task.markAsDone();
+        }
+        return task;
     }
 }

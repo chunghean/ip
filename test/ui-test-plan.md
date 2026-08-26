@@ -200,7 +200,7 @@ Bye bye!
 
 ## Test case 6: Save task-list changes to disk
 
-Aim: Verify that adding, completing, and deleting tasks writes the current task list to `./data/duke.txt`.
+Aim: Verify that adding, completing, and deleting tasks writes the current task list to `./data/bingusdingus.txt`.
 
 Inputs:
 
@@ -249,9 +249,43 @@ Bye bye!
 ------------------------------
 ```
 
-After the session, `data/duke.txt` should contain:
+After the session, `data/bingusdingus.txt` should contain:
 
 ```text
 T | 1 | read book
 D | 0 | return book | June 6th
+```
+
+## Test case 7: Load saved tasks at startup
+
+Aim: Verify that tasks saved in `./data/bingusdingus.txt` are loaded when the application starts.
+
+Setup: Run test case 6 first, leaving its expected storage file in place.
+
+Inputs:
+
+```text
+list
+bye
+```
+
+Expected output:
+
+```text
+        .-""""-.
+       /  o  o  \
+      |    ∆     |     BINGUS
+      |  \___/   |     DINGUS
+       \        /
+        '-.__.-'
+------------------------------
+Hey there, I'm Bingus Dingusss.
+How can I help ya?
+------------------------------
+Here are the tasks in your list:
+1. [T][X] read book
+2. [D][ ] return book (by: June 6th)
+------------------------------
+Bye bye!
+------------------------------
 ```
