@@ -13,4 +13,11 @@ public class Deadline extends Task {
     public String toString() {
         return "[D][" + (this.isDone() ? "X] " : " ] ") + this.getDescription() + " (by: " + this.deadline + ")";
     }
+
+    /** Returns the deadline task in the format used by the task storage file. */
+    @Override
+    public String toFileFormat() {
+        return "D | " + (this.isDone() ? "1" : "0") + " | " + this.getDescription()
+                + " | " + this.deadline;
+    }
 }

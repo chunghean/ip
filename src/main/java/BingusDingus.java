@@ -35,7 +35,7 @@ public class BingusDingus {
                             ui.showTaskAlreadyDone();
                         }
                         else {
-                            taskList.get(taskIndex).markAsDone();
+                            taskList.markAsDone(taskIndex);
                             ui.showTaskMarkedDone(taskList.get(taskIndex));
                         }
                     } else {
@@ -43,7 +43,7 @@ public class BingusDingus {
                             ui.showTaskNotDone();
                         }
                         else {
-                            taskList.get(taskIndex).markAsNotDone();
+                            taskList.markAsNotDone(taskIndex);
                             ui.showTaskMarkedNotDone(taskList.get(taskIndex));
                         }
                     }
