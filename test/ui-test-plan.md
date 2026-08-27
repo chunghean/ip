@@ -9,7 +9,7 @@ Aim: Verify that a deadline command creates and displays a deadline task with it
 Inputs:
 
 ```text
-deadline return book /by Sunday
+deadline return book /by 2/12/2019 1800
 bye
 ```
 
@@ -25,7 +25,7 @@ Hey there, I'm Bingus Dingusss.
 How can I help ya?
 ------------------------------
 Got it. I've added this task:
-  [D][ ] return book (by: Sunday)
+  [D][ ] return book (by: Dec 02 2019 6:00 PM)
 Now you have 1 tasks in the list.
 ------------------------------
 Bye bye!
@@ -39,7 +39,7 @@ Aim: Verify that an event command parses the description, start time, and end ti
 Inputs:
 
 ```text
-event project meeting /from Mon 2pm /to 4pm
+event project meeting /from 2019-10-15 1400 /to 2019-10-15 1600
 bye
 ```
 
@@ -55,7 +55,7 @@ Hey there, I'm Bingus Dingusss.
 How can I help ya?
 ------------------------------
 Got it. I've added this task:
-  [E][ ] project meeting (from: Mon 2pm to: 4pm)
+  [E][ ] project meeting (from: Oct 15 2019 2:00 PM to: Oct 15 2019 4:00 PM)
 Now you have 1 tasks in the list.
 ------------------------------
 Bye bye!
@@ -71,6 +71,7 @@ Inputs:
 ```text
 todo
 deadline return book
+deadline return book /by not-a-date
 event project meeting /from Mon 2pm
 unknown command
 list
@@ -94,6 +95,9 @@ I've got no idea watchu talkin' about
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
 ------------------------------
 Deadline requires a description and a date
+Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
+------------------------------
+Deadline date/time must use yyyy-mm-dd or d/M/yyyy HHmm
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
 ------------------------------
 Event requires a description, start, and end
@@ -206,8 +210,8 @@ Inputs:
 
 ```text
 todo read book
-deadline return book /by June 6th
-event project meeting /from Aug 6th 2pm /to 4pm
+deadline return book /by 2019-06-06
+event project meeting /from 2019-08-06 1400 /to 2019-08-06 1600
 mark 1
 delete 3
 bye
@@ -231,11 +235,11 @@ Got it. I've added this task:
 Now you have 1 tasks in the list.
 ------------------------------
 Got it. I've added this task:
-  [D][ ] return book (by: June 6th)
+  [D][ ] return book (by: Jun 06 2019)
 Now you have 2 tasks in the list.
 ------------------------------
 Got it. I've added this task:
-  [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
+  [E][ ] project meeting (from: Aug 06 2019 2:00 PM to: Aug 06 2019 4:00 PM)
 Now you have 3 tasks in the list.
 ------------------------------
 Nice! I've marked this task as done:
@@ -253,7 +257,7 @@ After the session, `data/bingusdingus.txt` should contain:
 
 ```text
 T | 1 | read book
-D | 0 | return book | June 6th
+D | 0 | return book | 2019-06-06T00:00
 ```
 
 ## Test case 7: Load saved tasks at startup
@@ -284,7 +288,7 @@ How can I help ya?
 ------------------------------
 Here are the tasks in your list:
 1. [T][X] read book
-2. [D][ ] return book (by: June 6th)
+2. [D][ ] return book (by: Jun 06 2019)
 ------------------------------
 Bye bye!
 ------------------------------
@@ -299,8 +303,8 @@ Setup: Replace `data/bingusdingus.txt` with:
 ```text
 T | 1 | valid todo
 malformed record
-D | 0 | valid deadline | Tomorrow
-E | 1 | valid event | Monday | Tuesday
+D | 0 | valid deadline | 2019-10-15T00:00
+E | 1 | valid event | 2019-10-15T09:00 | 2019-10-15T10:00
 X | 0 | unknown type
 T | 2 | invalid status
 ```
@@ -327,8 +331,8 @@ How can I help ya?
 ------------------------------
 Here are the tasks in your list:
 1. [T][X] valid todo
-2. [D][ ] valid deadline (by: Tomorrow)
-3. [E][X] valid event (from: Monday to: Tuesday)
+2. [D][ ] valid deadline (by: Oct 15 2019)
+3. [E][X] valid event (from: Oct 15 2019 9:00 AM to: Oct 15 2019 10:00 AM)
 ------------------------------
 Bye bye!
 ------------------------------

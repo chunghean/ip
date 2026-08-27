@@ -3,6 +3,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -140,19 +141,24 @@ public class TaskList {
         }
 
         Task task;
-        switch (type) {
-        case "T":
-            task = parts.length == 3 && !parts[2].isBlank() ? new Todo(parts[2]) : null;
-            break;
-        case "D":
-            task = parts.length == 4 && !parts[2].isBlank() && !parts[3].isBlank()
-                    ? new Deadline(parts[2], parts[3]) : null;
-            break;
-        case "E":
-            task = parts.length == 5 && !parts[2].isBlank() && !parts[3].isBlank() && !parts[4].isBlank()
-                    ? new Event(parts[2], parts[3], parts[4]) : null;
-            break;
-        default:
+        try {
+            switch (type) {
+            case "T":
+                task = parts.length == 3 && !parts[2].isBlank() ? new Todo(parts[2]) : null;
+                break;
+            case "D":
+                task = parts.length == 4 && !parts[2].isBlank() && !parts[3].isBlank()
+                        ? new Deadline(parts[2], parts[3]) : null;
+                break;
+            case "E":
+                task = parts.length == 5 && !parts[2].isBlank() && !parts[3].isBlank() && !parts[4].isBlank()
+                        ? new Event(parts[2], parts[3], parts[4]) : null;
+                break;
+            default:
+                task = null;
+            }
+        } catch (DateTimeParseException e) {
+            // Invalid typed date/time values are ignored just like other malformed records.
             task = null;
         }
 

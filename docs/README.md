@@ -13,15 +13,15 @@ Got it. I've added this task:
   [T][ ] Buy groceries
 Now you have 1 tasks in the list.
 
-deadline Submit report /by Friday
+deadline Submit report /by 2019-10-15
 Got it. I've added this task:
-  [D][ ] Submit report (by: Friday)
+  [D][ ] Submit report (by: Oct 15 2019)
 Now you have 2 tasks in the list.
 
 list
 Here are the tasks in your list:
 1. [T][ ] Buy groceries
-2. [D][ ] Submit report (by: Friday)
+2. [D][ ] Submit report (by: Oct 15 2019)
 
 mark 1
 Nice! I've marked this task as done:
@@ -57,14 +57,14 @@ Now you have 1 tasks in the list.
 Use `/by` to separate the description from the deadline:
 
 ```text
-deadline Submit report /by Friday
+deadline Submit report /by 2019-10-15
 ```
 
 Output:
 
 ```text
 Got it. I've added this task:
-  [D][ ] Submit report (by: Friday)
+  [D][ ] Submit report (by: Oct 15 2019)
 Now you have 1 tasks in the list.
 ```
 
@@ -73,14 +73,14 @@ Now you have 1 tasks in the list.
 Use `/from` and `/to` to specify the start and end times:
 
 ```text
-event Team meeting /from Monday 10am /to Monday 11am
+event Team meeting /from 2019-10-15 1000 /to 2019-10-15 1100
 ```
 
 Output:
 
 ```text
 Got it. I've added this task:
-  [E][ ] Team meeting (from: Monday 10am to Monday 11am)
+  [E][ ] Team meeting (from: Oct 15 2019 10:00 AM to Oct 15 2019 11:00 AM)
 Now you have 1 tasks in the list.
 ```
 
@@ -102,6 +102,11 @@ Here are the tasks in your list:
 
 `[T]`, `[D]`, and `[E]` identify the task type. `[ ]` means not done and
 `[X]` means done.
+
+Dates use `yyyy-mm-dd`, and date/times use `yyyy-mm-dd HHmm`. The compact
+day/month format `2/12/2019 1800` is also accepted and means 2 December 2019
+at 6:00 PM. Dates are stored as typed `LocalDateTime` values and displayed in
+the format `MMM dd yyyy`, with a 12-hour time shown when one was provided.
 
 ### Mark a task as done
 
