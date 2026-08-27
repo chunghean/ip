@@ -35,16 +35,24 @@ public class BingusDingus {
                             ui.showTaskAlreadyDone();
                         }
                         else {
-                            taskList.get(taskIndex).markAsDone();
-                            ui.showTaskMarkedDone(taskList.get(taskIndex));
+                            try {
+                                taskList.markAsDone(taskIndex);
+                                ui.showTaskMarkedDone(taskList.get(taskIndex));
+                            } catch (IllegalStateException e) {
+                                ui.showStorageError();
+                            }
                         }
                     } else {
                         if (!taskList.get(taskIndex).isDone()) {
                             ui.showTaskNotDone();
                         }
                         else {
-                            taskList.get(taskIndex).markAsNotDone();
-                            ui.showTaskMarkedNotDone(taskList.get(taskIndex));
+                            try {
+                                taskList.markAsNotDone(taskIndex);
+                                ui.showTaskMarkedNotDone(taskList.get(taskIndex));
+                            } catch (IllegalStateException e) {
+                                ui.showStorageError();
+                            }
                         }
                     }
                 } catch (NumberFormatException e) {
@@ -60,8 +68,12 @@ public class BingusDingus {
                     if (taskIndex < 0 || taskIndex >= taskList.size()) {
                         ui.showInvalidTaskNumber();
                     } else {
-                        String deletedDescription = taskList.remove(taskIndex).getDescription();
-                        ui.showTaskDeleted(deletedDescription, taskList.size());
+                        try {
+                            String deletedDescription = taskList.remove(taskIndex).getDescription();
+                            ui.showTaskDeleted(deletedDescription, taskList.size());
+                        } catch (IllegalStateException e) {
+                            ui.showStorageError();
+                        }
                     }
                 } catch (NumberFormatException e) {
                     ui.showInvalidTaskNumberFormat();
@@ -73,6 +85,9 @@ public class BingusDingus {
                     taskList.add(parser.parseTask(command));
                 } catch (InvalidTaskCommandException e) {
                     ui.showInvalidCommand(e.getMessage());
+                    continue;
+                } catch (IllegalStateException e) {
+                    ui.showStorageError();
                     continue;
                 }
 

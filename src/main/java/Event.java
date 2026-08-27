@@ -15,4 +15,11 @@ public class Event extends Task {
     public String toString() {
         return "[E][" + (this.isDone() ? "X] " : " ] ") + this.getDescription() + " (from: " + this.start + " to: " + this.end + ")";
     }
+
+    /** Returns the event task in the format used by the task storage file. */
+    @Override
+    public String toFileFormat() {
+        return "E | " + (this.isDone() ? "1" : "0") + " | " + this.getDescription()
+                + " | " + this.start + " | " + this.end;
+    }
 }
