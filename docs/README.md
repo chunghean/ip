@@ -80,7 +80,7 @@ Output:
 
 ```text
 Got it. I've added this task:
-  [E][ ] Team meeting (from: Oct 15 2019 10:00 AM to Oct 15 2019 11:00 AM)
+  [E][ ] Team meeting (from: Oct 15 2019 10:00 AM to: Oct 15 2019 11:00 AM)
 Now you have 1 tasks in the list.
 ```
 
@@ -97,16 +97,20 @@ list
 ```text
 Here are the tasks in your list:
 1. [T][ ] Buy groceries
-2. [D][X] Submit report (by: Friday)
+2. [D][ ] Submit report (by: Oct 15 2019)
 ```
 
 `[T]`, `[D]`, and `[E]` identify the task type. `[ ]` means not done and
 `[X]` means done.
 
-Dates use `yyyy-mm-dd`, and date/times use `yyyy-mm-dd HHmm`. The compact
-day/month format `2/12/2019 1800` is also accepted and means 2 December 2019
-at 6:00 PM. Dates are stored as typed `LocalDateTime` values and displayed in
-the format `MMM dd yyyy`, with a 12-hour time shown when one was provided.
+Dates use `yyyy-MM-dd`, for example `2019-10-15`. Date/times use
+`yyyy-MM-dd HHmm`, for example `2019-10-15 1800`. The compact day/month format
+`2/12/2019 1800` is also accepted and means 2 December 2019 at 6:00 PM. A
+colon may be used in the time, as in `18:00`.
+
+Dates are stored as typed `LocalDateTime` values. Date-only values are displayed
+as `MMM dd yyyy`, such as `Oct 15 2019`; values with a time are displayed with
+that date followed by a 12-hour time, such as `Oct 15 2019 6:00 PM`.
 
 ### Mark a task as done
 
