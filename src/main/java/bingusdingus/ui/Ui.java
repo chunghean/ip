@@ -1,3 +1,8 @@
+package bingusdingus.ui;
+
+import bingusdingus.task.Task;
+import bingusdingus.task.TaskList;
+
 /** Handles all user-facing output for Bingus Dingus. */
 public class Ui {
 

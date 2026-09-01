@@ -1,3 +1,5 @@
+package bingusdingus.task;
+
 /** Represents a task without a deadline or scheduled time. */
 public class Todo extends Task {
 

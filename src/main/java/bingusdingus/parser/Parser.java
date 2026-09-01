@@ -1,3 +1,10 @@
+package bingusdingus.parser;
+
+import bingusdingus.task.Deadline;
+import bingusdingus.task.Event;
+import bingusdingus.task.Task;
+import bingusdingus.task.Todo;
+
 import java.time.format.DateTimeParseException;
 
 /** Parses user commands into the appropriate task subtype. */
@@ -56,12 +63,12 @@ public class Parser {
         if (command.startsWith("deadline ")) {
             String[] parts = command.substring(9).trim().split("/by", 2);
             if (parts.length != 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-                throw new InvalidTaskCommandException("Deadline requires a description and a date");
+                throw new InvalidTaskCommandException("deadline requires a description and a date");
             }
             try {
                 return new Deadline(parts[0].trim(), parts[1].trim());
             } catch (DateTimeParseException e) {
-                throw new InvalidTaskCommandException("Deadline date/time must use yyyy-mm-dd or d/M/yyyy HHmm");
+                throw new InvalidTaskCommandException("deadline date/time must use yyyy-mm-dd or d/M/yyyy HHmm");
             }
         }
 
@@ -71,12 +78,12 @@ public class Parser {
             if (fromParts.length != 2 || toParts.length != 2
                     || fromParts[0].trim().isEmpty() || toParts[0].trim().isEmpty()
                     || toParts[1].trim().isEmpty()) {
-                throw new InvalidTaskCommandException("Event requires a description, start, and end");
+                throw new InvalidTaskCommandException("event requires a description, start, and end");
             }
             try {
                 return new Event(fromParts[0].trim(), toParts[0].trim(), toParts[1].trim());
             } catch (DateTimeParseException e) {
-                throw new InvalidTaskCommandException("Event date/time must use yyyy-mm-dd or d/M/yyyy HHmm");
+                throw new InvalidTaskCommandException("event date/time must use yyyy-mm-dd or d/M/yyyy HHmm");
             }
         }
 

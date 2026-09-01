@@ -1,4 +1,7 @@
+package bingusdingus.task;
+
 import java.time.LocalDateTime;
+import bingusdingus.parser.DateTimeParser;
 
 /** Represents a task that takes place during a specified time period. */
 public class Event extends Task {

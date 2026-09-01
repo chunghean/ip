@@ -36,7 +36,7 @@ marking, unmarking, or deleting a task.
 
 ## Adding tasks
 
-### Todo
+### bingusdingus.task.Todo
 
 Use `todo` followed by a description:
 
@@ -52,7 +52,7 @@ Got it. I've added this task:
 Now you have 1 tasks in the list.
 ```
 
-### Deadline
+### bingusdingus.task.Deadline
 
 Use `/by` to separate the description from the deadline:
 
@@ -68,7 +68,7 @@ Got it. I've added this task:
 Now you have 1 tasks in the list.
 ```
 
-### Event
+### bingusdingus.task.Event
 
 Use `/from` and `/to` to specify the start and end times:
 
@@ -145,7 +145,7 @@ both a description and a date:
 
 ```text
 deadline Submit report
-Deadline requires a description and a date
+bingusdingus.task.Deadline requires a description and a date
 ```
 
 If a command refers to a task number that does not exist, Bingus Dingus shows:

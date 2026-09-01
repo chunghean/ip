@@ -94,13 +94,13 @@ How can I help ya?
 I've got no idea watchu talkin' about
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
 ------------------------------
-Deadline requires a description and a date
+bingusdingus.task.Deadline requires a description and a date
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
 ------------------------------
-Deadline date/time must use yyyy-mm-dd or d/M/yyyy HHmm
+bingusdingus.task.Deadline date/time must use yyyy-mm-dd or d/M/yyyy HHmm
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
 ------------------------------
-Event requires a description, start, and end
+bingusdingus.task.Event requires a description, start, and end
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
 ------------------------------
 I've got no idea watchu talkin' about

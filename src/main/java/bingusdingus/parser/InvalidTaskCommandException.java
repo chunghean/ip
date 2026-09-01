@@ -1,3 +1,5 @@
+package bingusdingus.parser;
+
 /**
  * Thrown when a user enters a task command with an invalid format.
  */
