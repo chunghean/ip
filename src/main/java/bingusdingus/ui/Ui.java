@@ -87,7 +87,8 @@ public class Ui {
     /** Displays an invalid-command message and the valid task formats. */
     public void showInvalidCommand(String message) {
         System.out.println(message);
-        System.out.println("Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.");
+        System.out.println("Use: todo <description>, deadline <description> /by <date>, or event <description>"
+                + " /from <start> /to <end>.");
         showSeparator();
     }
 

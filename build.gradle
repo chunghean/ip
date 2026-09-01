@@ -38,7 +38,7 @@ test {
 }
 
 application {
-    mainClass = 'BingusDingus'
+    mainClass = 'bingusdingus.BingusDingus'
 }
 
 jar {

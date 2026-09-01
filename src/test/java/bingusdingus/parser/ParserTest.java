@@ -22,7 +22,8 @@ class ParserTest {
         assertEquals(CommandType.UNMARK, parser.parseCommandType("unmark 1"));
         assertEquals(CommandType.DELETE, parser.parseCommandType("delete 1"));
         assertEquals(CommandType.TASK, parser.parseCommandType("todo buy milk"));
-        assertEquals(CommandType.TASK, parser.parseCommandType("deadline return book /by 2026-09-02"));
+        assertEquals(CommandType.TASK,
+                parser.parseCommandType("deadline return book /by 2026-09-02"));
         assertEquals(CommandType.TASK, parser.parseCommandType("event meeting /from 2026-09-02 0900 /to 2026-09-02 1000"));
         assertEquals(CommandType.UNKNOWN, parser.parseCommandType(null));
         assertEquals(CommandType.UNKNOWN, parser.parseCommandType("mark"));
