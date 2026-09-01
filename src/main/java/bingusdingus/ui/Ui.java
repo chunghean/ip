@@ -3,6 +3,8 @@ package bingusdingus.ui;
 import bingusdingus.task.Task;
 import bingusdingus.task.TaskList;
 
+import java.util.List;
+
 /** Handles all user-facing output for Bingus Dingus. */
 public class Ui {
 
@@ -33,6 +35,21 @@ public class Ui {
         for (int i = 0; i < taskList.size(); i++) {
             System.out.println((i + 1) + ". " + taskList.get(i));
         }
+        showSeparator();
+    }
+
+    /** Displays tasks whose descriptions contain the search keyword. */
+    public void showMatchingTasks(List<Task> matchingTasks) {
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            System.out.println((i + 1) + ". " + matchingTasks.get(i));
+        }
+        showSeparator();
+    }
+
+    /** Displays an error when a find command has no keyword. */
+    public void showMissingFindKeyword() {
+        System.out.println("Please specify a keyword to search for.");
         showSeparator();
     }
 

@@ -4,6 +4,7 @@ package bingusdingus.parser;
 public enum CommandType {
     BYE,
     LIST,
+    FIND,
     MARK,
     UNMARK,
     DELETE,

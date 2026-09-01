@@ -27,6 +27,13 @@ public class BingusDingus {
                 break;
             } else if (commandType == CommandType.LIST) {
                 ui.showTasks(taskList);
+            } else if (commandType == CommandType.FIND) {
+                String keyword = command.substring(5).trim();
+                if (keyword.isEmpty()) {
+                    ui.showMissingFindKeyword();
+                } else {
+                    ui.showMatchingTasks(taskList.find(keyword));
+                }
             } else if (commandType == CommandType.MARK || commandType == CommandType.UNMARK) {
                 boolean markingDone = commandType == CommandType.MARK;
                 String taskNumberText = command.substring(markingDone ? 5 : 7).trim();

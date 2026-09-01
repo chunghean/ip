@@ -25,6 +25,8 @@ public class Parser {
             return CommandType.BYE;
         } else if (command.equals("list")) {
             return CommandType.LIST;
+        } else if (command.startsWith("find ")) {
+            return CommandType.FIND;
         } else if (command.startsWith("mark ")) {
             return CommandType.MARK;
         } else if (command.startsWith("unmark ")) {

@@ -202,7 +202,54 @@ Bye bye!
 ------------------------------
 ```
 
-## Test case 6: Save task-list changes to disk
+## Test case 6: Find tasks by description keyword
+
+Aim: Verify that `find` displays tasks whose descriptions contain the keyword, ignoring letter case.
+
+Inputs:
+
+```text
+todo read book
+deadline return book /by 2019-06-06
+todo buy milk
+find BOOK
+bye
+```
+
+Expected output:
+
+```text
+        .-""""-.
+       /  o  o  \
+      |    ∆     |     BINGUS
+      |  \___/   |     DINGUS
+       \        /
+        '-.__.-'
+------------------------------
+Hey there, I'm Bingus Dingusss.
+How can I help ya?
+------------------------------
+Got it. I've added this task:
+  [T][ ] read book
+Now you have 1 tasks in the list.
+------------------------------
+Got it. I've added this task:
+  [D][ ] return book (by: Jun 06 2019)
+Now you have 2 tasks in the list.
+------------------------------
+Got it. I've added this task:
+  [T][ ] buy milk
+Now you have 3 tasks in the list.
+------------------------------
+Here are the matching tasks in your list:
+1. [T][ ] read book
+2. [D][ ] return book (by: Jun 06 2019)
+------------------------------
+Bye bye!
+------------------------------
+```
+
+## Test case 7: Save task-list changes to disk
 
 Aim: Verify that adding, completing, and deleting tasks writes the current task list to `./data/bingusdingus.txt`.
 
@@ -260,11 +307,11 @@ T | 1 | read book
 D | 0 | return book | 2019-06-06T00:00
 ```
 
-## Test case 7: Load saved tasks at startup
+## Test case 8: Load saved tasks at startup
 
 Aim: Verify that tasks saved in `./data/bingusdingus.txt` are loaded when the application starts.
 
-Setup: Run test case 6 first, leaving its expected storage file in place.
+Setup: Run test case 7 first, leaving its expected storage file in place.
 
 Inputs:
 
@@ -294,7 +341,7 @@ Bye bye!
 ------------------------------
 ```
 
-## Test case 8: Ignore malformed stored tasks
+## Test case 9: Ignore malformed stored tasks
 
 Aim: Verify that invalid storage records do not crash startup or prevent valid tasks from loading.
 

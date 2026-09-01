@@ -61,6 +61,16 @@ class TaskListTest {
     }
 
     @Test
+    void taskList_findReturnsCaseInsensitiveDescriptionMatches() {
+        TaskList taskList = new TaskList();
+        taskList.add(new Todo("read book"));
+        taskList.add(new Deadline("return BOOK", "2019-06-06"));
+        taskList.add(new Todo("buy milk"));
+
+        assertEquals(List.of(taskList.get(0), taskList.get(1)), taskList.find("book"));
+    }
+
+    @Test
     void taskList_loadsValidRecordsAndIgnoresMalformedRecords() throws IOException {
         Files.createDirectories(STORAGE_PATH.getParent());
         Files.write(STORAGE_PATH, List.of(
