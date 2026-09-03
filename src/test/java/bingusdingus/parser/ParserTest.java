@@ -1,14 +1,16 @@
 package bingusdingus.parser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
+
 import bingusdingus.task.Deadline;
 import bingusdingus.task.Event;
 import bingusdingus.task.Task;
 import bingusdingus.task.Todo;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Tests command classification and conversion of commands into tasks. */
 class ParserTest {
@@ -25,7 +27,8 @@ class ParserTest {
         assertEquals(CommandType.TASK, parser.parseCommandType("todo buy milk"));
         assertEquals(CommandType.TASK,
                 parser.parseCommandType("deadline return book /by 2026-09-02"));
-        assertEquals(CommandType.TASK, parser.parseCommandType("event meeting /from 2026-09-02 0900 /to 2026-09-02 1000"));
+        assertEquals(CommandType.TASK,
+                parser.parseCommandType("event meeting /from 2026-09-02 0900 /to 2026-09-02 1000"));
         assertEquals(CommandType.UNKNOWN, parser.parseCommandType(null));
         assertEquals(CommandType.UNKNOWN, parser.parseCommandType("mark"));
         assertEquals(CommandType.UNKNOWN, parser.parseCommandType("unknown command"));
@@ -43,25 +46,26 @@ class ParserTest {
 
         Task event = parser.parseTask("event project meeting /from 2019-10-15 1400 /to 2019-10-15 1600");
         assertInstanceOf(Event.class, event);
-        assertEquals("[E][ ] project meeting (from: Oct 15 2019 2:00 PM to: Oct 15 2019 4:00 PM)", event.toString());
+        assertEquals("[E][ ] project meeting (from: Oct 15 2019 2:00 PM to: Oct 15 2019 4:00 PM)",
+                event.toString());
     }
 
     @Test
     void parseTask_rejectsMissingAndMalformedTaskDetails() {
-        InvalidTaskCommandException emptyTodo = assertThrows(InvalidTaskCommandException.class,
-                () -> parser.parseTask("todo"));
+        InvalidTaskCommandException emptyTodo = assertThrows(
+                InvalidTaskCommandException.class, () -> parser.parseTask("todo"));
         assertEquals("I've got no idea watchu talkin' about", emptyTodo.getMessage());
 
-        InvalidTaskCommandException missingDeadline = assertThrows(InvalidTaskCommandException.class,
-                () -> parser.parseTask("deadline return book"));
+        InvalidTaskCommandException missingDeadline = assertThrows(
+                InvalidTaskCommandException.class, () -> parser.parseTask("deadline return book"));
         assertEquals("deadline requires a description and a date", missingDeadline.getMessage());
 
-        InvalidTaskCommandException invalidDate = assertThrows(InvalidTaskCommandException.class,
-                () -> parser.parseTask("deadline return book /by not-a-date"));
+        InvalidTaskCommandException invalidDate = assertThrows(
+                InvalidTaskCommandException.class, () -> parser.parseTask("deadline return book /by not-a-date"));
         assertEquals("deadline date/time must use yyyy-mm-dd or d/M/yyyy HHmm", invalidDate.getMessage());
 
-        InvalidTaskCommandException missingEventPart = assertThrows(InvalidTaskCommandException.class,
-                () -> parser.parseTask("event meeting /from 2026-09-02 0900"));
+        InvalidTaskCommandException missingEventPart = assertThrows(
+                InvalidTaskCommandException.class, () -> parser.parseTask("event meeting /from 2026-09-02 0900"));
         assertEquals("event requires a description, start, and end", missingEventPart.getMessage());
     }
 }

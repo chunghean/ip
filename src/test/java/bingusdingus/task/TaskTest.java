@@ -1,12 +1,12 @@
 package bingusdingus.task;
 
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.LocalDateTime;
+
+import org.junit.jupiter.api.Test;
 
 /** Tests task state transitions and the display/storage representations of task types. */
 class TaskTest {
@@ -37,7 +37,8 @@ class TaskTest {
         Event event = new Event("project meeting",
                 LocalDateTime.of(2019, 10, 15, 14, 0),
                 LocalDateTime.of(2019, 10, 15, 16, 0));
-        assertEquals("[E][ ] project meeting (from: Oct 15 2019 2:00 PM to: Oct 15 2019 4:00 PM)", event.toString());
+        assertEquals("[E][ ] project meeting (from: Oct 15 2019 2:00 PM to: Oct 15 2019 4:00 PM)",
+                event.toString());
         assertEquals("E | 0 | project meeting | 2019-10-15T14:00 | 2019-10-15T16:00", event.toFileFormat());
     }
 }

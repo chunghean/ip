@@ -1,11 +1,11 @@
 package bingusdingus.parser;
 
+import java.time.format.DateTimeParseException;
+
 import bingusdingus.task.Deadline;
 import bingusdingus.task.Event;
 import bingusdingus.task.Task;
 import bingusdingus.task.Todo;
-
-import java.time.format.DateTimeParseException;
 
 /** Parses user commands into the appropriate task subtype. */
 public class Parser {

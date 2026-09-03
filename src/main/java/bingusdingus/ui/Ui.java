@@ -1,9 +1,9 @@
 package bingusdingus.ui;
 
+import java.util.List;
+
 import bingusdingus.task.Task;
 import bingusdingus.task.TaskList;
-
-import java.util.List;
 
 /** Handles all user-facing output for Bingus Dingus. */
 public class Ui {

@@ -10,8 +10,16 @@ java {
     targetCompatibility = JavaVersion.VERSION_25
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
 repositories {
     mavenCentral()
+}
+
+checkstyle {
+    toolVersion = '14.1.0'
 }
 
 dependencies {
