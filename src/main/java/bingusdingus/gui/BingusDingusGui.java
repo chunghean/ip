@@ -23,6 +23,12 @@ public class BingusDingusGui extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+
+            stage.setMinHeight(620);
+            stage.setMinWidth(417);
+            stage.setMaxHeight(700);
+            stage.setMaxWidth(500);
+
             fxmlLoader.<MainWindow>getController().setBingusDingus(bingusDingus);
             stage.show();
         } catch (IOException e) {

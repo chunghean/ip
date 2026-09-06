@@ -1,7 +1,6 @@
 package bingusdingus.gui;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +12,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 
+/** Displays a message and its associated profile picture. */
 public class DialogBox extends HBox {
 
     @FXML
@@ -22,6 +23,7 @@ public class DialogBox extends HBox {
     @FXML
     private ImageView displayPicture;
 
+    /** Creates a dialog box containing the supplied message and profile picture. */
     public DialogBox(String s, Image i) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/DialogBox.fxml"));
@@ -34,6 +36,7 @@ public class DialogBox extends HBox {
 
         dialog.setText(s);
         displayPicture.setImage(i);
+        displayPicture.setClip(new Circle(45, 45, 45));
     }
 
     /**
