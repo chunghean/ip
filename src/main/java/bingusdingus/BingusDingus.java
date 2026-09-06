@@ -100,4 +100,14 @@ public class BingusDingus {
             }
         }
     }
+
+    public String getResponse(String input) {
+        TaskList taskList = new TaskList();
+        Parser parser = new Parser();
+        Ui ui = new Ui();
+
+        String command = input;
+        CommandType commandType = parser.parseCommandType(command);
+        return input;
+    }
 }

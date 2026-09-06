@@ -1,5 +1,6 @@
 package bingusdingus.gui;
 
+import bingusdingus.BingusDingus;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,6 +21,8 @@ public class BingusDingusGui extends Application {
     private TextField userInput;
     private Button sendButton;
     private Scene scene;
+
+    private BingusDingus bingusDingus =  new BingusDingus();
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.jpg"));
     private Image bingusDingusImage = new Image(this.getClass().getResourceAsStream("/images/BingusDingus.jpg"));
@@ -90,7 +93,11 @@ public class BingusDingusGui extends Application {
      * the dialog container. Clears the user input after processing.
      */
     private void handleUserInput() {
-        dialogContainer.getChildren().addAll(new DialogBox(userInput.getText(), userImage));
+        String userText = userInput.getText();
+        String bingusDingusText = bingusDingus.getResponse(userText);
+        dialogContainer.getChildren().addAll(
+                DialogBox.getUserDialog(userText, userImage),
+                DialogBox.getBingusDingusDialog(bingusDingusText, bingusDingusImage));
         userInput.clear();
     }
 }
