@@ -96,7 +96,7 @@ public class Ui {
     /** Displays an invalid-command message and the valid task formats. */
     public String showInvalidCommand(String message) {
         return message + "\n"
-                + "Use: todo <description>, deadline <description> /by <date>, or event <description>"
+                + "Use:\ntodo <description>\ndeadline <description> /by <date>, or\nevent <description>"
                 + " /from <start> /to <end>.";
     }
 

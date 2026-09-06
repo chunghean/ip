@@ -67,5 +67,10 @@ class ParserTest {
         InvalidTaskCommandException missingEventPart = assertThrows(
                 InvalidTaskCommandException.class, () -> parser.parseTask("event meeting /from 2026-09-02 0900"));
         assertEquals("event requires a description, start, and end", missingEventPart.getMessage());
+
+        InvalidTaskCommandException invalidEventRange = assertThrows(
+                InvalidTaskCommandException.class,
+                () -> parser.parseTask("event meeting /from 2026-09-02 1000 /to 2026-09-02 0900"));
+        assertEquals("event date/time must use yyyy-mm-dd or d/M/yyyy HHmm", invalidEventRange.getMessage());
     }
 }

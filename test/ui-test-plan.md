@@ -65,6 +65,7 @@ todo
 deadline return book
 deadline return book /by not-a-date
 event project meeting /from Mon 2pm
+event project meeting /from 2026-09-02 1000 /to 2026-09-02 0900
 unknown command
 list
 bye
@@ -88,6 +89,8 @@ Use: todo <description>, deadline <description> /by <date>, or event <descriptio
 bingusdingus.task.Deadline date/time must use yyyy-mm-dd or d/M/yyyy HHmm
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
 bingusdingus.task.Event requires a description, start, and end
+Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
+bingusdingus.task.Event date/time must use yyyy-mm-dd or d/M/yyyy HHmm
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
 I've got no idea watchu talkin' about
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.

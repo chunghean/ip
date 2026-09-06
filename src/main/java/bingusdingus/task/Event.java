@@ -1,6 +1,7 @@
 package bingusdingus.task;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import bingusdingus.parser.DateTimeParser;
 
@@ -17,8 +18,11 @@ public class Event extends Task {
     /** Creates an event task from already parsed start and end date/times. */
     public Event(String description, LocalDateTime start, LocalDateTime end) {
         super(description);
-        this.start = start;
-        this.end = end;
+        this.start = Objects.requireNonNull(start, "start");
+        this.end = Objects.requireNonNull(end, "end");
+        if (!this.end.isAfter(this.start)) {
+            throw new IllegalArgumentException("Event end must be after start");
+        }
     }
 
     /** Returns the event task's display text. */

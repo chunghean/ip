@@ -2,6 +2,7 @@ package bingusdingus.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
@@ -40,5 +41,25 @@ class TaskTest {
         assertEquals("[E][ ] project meeting (from: Oct 15 2019 2:00 PM to: Oct 15 2019 4:00 PM)",
                 event.toString());
         assertEquals("E | 0 | project meeting | 2019-10-15T14:00 | 2019-10-15T16:00", event.toFileFormat());
+    }
+
+    @Test
+    void event_rejectsEndAtOrBeforeStart() {
+        LocalDateTime start = LocalDateTime.of(2026, 9, 7, 15, 0);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new Event("meeting", start, start));
+        assertThrows(IllegalArgumentException.class,
+                () -> new Event("meeting", start, start.minusMinutes(1)));
+    }
+
+    @Test
+    void deadlineAndEvent_rejectNullDateTimes() {
+        assertThrows(NullPointerException.class,
+                () -> new Deadline("submit report", (LocalDateTime) null));
+        assertThrows(NullPointerException.class,
+                () -> new Event("meeting", null, LocalDateTime.of(2026, 9, 7, 16, 0)));
+        assertThrows(NullPointerException.class,
+                () -> new Event("meeting", LocalDateTime.of(2026, 9, 7, 15, 0), null));
     }
 }

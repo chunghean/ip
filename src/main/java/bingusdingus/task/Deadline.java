@@ -1,6 +1,7 @@
 package bingusdingus.task;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import bingusdingus.parser.DateTimeParser;
 
@@ -16,7 +17,7 @@ public class Deadline extends Task {
     /** Creates a deadline task from an already parsed date/time. */
     public Deadline(String description, LocalDateTime deadline) {
         super(description);
-        this.deadline = deadline;
+        this.deadline = Objects.requireNonNull(deadline, "deadline");
     }
 
     /** Returns the deadline task's display text. */

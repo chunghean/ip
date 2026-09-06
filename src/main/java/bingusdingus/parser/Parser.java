@@ -84,7 +84,7 @@ public class Parser {
             }
             try {
                 return new Event(fromParts[0].trim(), toParts[0].trim(), toParts[1].trim());
-            } catch (DateTimeParseException e) {
+            } catch (DateTimeParseException | IllegalArgumentException e) {
                 throw new InvalidTaskCommandException("event date/time must use yyyy-mm-dd or d/M/yyyy HHmm");
             }
         }
