@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /** Stores and manages the tasks created by Bingus Dingus. */
 public class TaskList {
@@ -88,11 +89,12 @@ public class TaskList {
         return tasks.size();
     }
 
-    /** Returns tasks whose descriptions contain the keyword, ignoring letter case. */
-    public List<Task> find(String keyword) {
+    /** Returns the zero-based indexes of tasks whose descriptions contain the keyword. */
+    public List<Integer> findIndexes(String keyword) {
         String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
-        return tasks.stream()
-                .filter(task -> task.getDescription().toLowerCase(Locale.ROOT).contains(normalizedKeyword))
+        return IntStream.range(0, tasks.size())
+                .filter(index -> tasks.get(index).getDescription().toLowerCase(Locale.ROOT).contains(normalizedKeyword))
+                .boxed()
                 .toList();
     }
 

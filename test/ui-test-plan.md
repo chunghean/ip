@@ -177,9 +177,9 @@ Aim: Verify that `find` displays tasks whose descriptions contain the keyword, i
 Inputs:
 
 ```text
+todo buy milk
 todo read book
 deadline return book /by 2019-06-06
-todo buy milk
 find BOOK
 bye
 ```
@@ -196,17 +196,17 @@ Expected output:
 Hey there, I'm Bingus Dingusss.
 How can I help ya?
 Got it. I've added this task:
-  [T][ ] read book
+  [T][ ] buy milk
 Now you have 1 tasks in the list.
 Got it. I've added this task:
-  [D][ ] return book (by: Jun 06 2019)
+  [T][ ] read book
 Now you have 2 tasks in the list.
 Got it. I've added this task:
-  [T][ ] buy milk
+  [D][ ] return book (by: Jun 06 2019)
 Now you have 3 tasks in the list.
 Here are the matching tasks in your list:
-1. [T][ ] read book
-2. [D][ ] return book (by: Jun 06 2019)
+2. [T][ ] read book
+3. [D][ ] return book (by: Jun 06 2019)
 Bye bye!
 ```
 

@@ -35,11 +35,11 @@ public class Ui {
         return response.toString();
     }
 
-    /** Displays tasks whose descriptions contain the search keyword. */
-    public String showMatchingTasks(List<Task> matchingTasks) {
+    /** Displays matching tasks using their original one-based list numbers. */
+    public String showMatchingTasks(TaskList taskList, List<Integer> matchingIndexes) {
         StringBuilder response = new StringBuilder("Here are the matching tasks in your list:");
-        for (int i = 0; i < matchingTasks.size(); i++) {
-            response.append("\n").append(i + 1).append(". ").append(matchingTasks.get(i));
+        for (int index : matchingIndexes) {
+            response.append("\n").append(index + 1).append(". ").append(taskList.get(index));
         }
         return response.toString();
     }
