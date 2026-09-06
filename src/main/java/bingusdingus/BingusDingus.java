@@ -46,7 +46,9 @@ public class BingusDingus {
             return ui.showTasks(taskList);
         } else if (commandType == CommandType.FIND) {
             String keyword = input.substring(5).trim();
-            return keyword.isEmpty() ? ui.showMissingFindKeyword() : ui.showMatchingTasks(taskList.find(keyword));
+            return keyword.isEmpty()
+                    ? ui.showMissingFindKeyword()
+                    : ui.showMatchingTasks(taskList, taskList.findIndexes(keyword));
         } else if (commandType == CommandType.MARK || commandType == CommandType.UNMARK) {
             return handleMarkCommand(input, commandType);
         } else if (commandType == CommandType.DELETE) {

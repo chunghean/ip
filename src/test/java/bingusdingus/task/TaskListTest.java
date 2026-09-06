@@ -63,11 +63,11 @@ class TaskListTest {
     @Test
     void taskList_findReturnsCaseInsensitiveDescriptionMatches() {
         TaskList taskList = new TaskList();
+        taskList.add(new Todo("buy milk"));
         taskList.add(new Todo("read book"));
         taskList.add(new Deadline("return BOOK", "2019-06-06"));
-        taskList.add(new Todo("buy milk"));
 
-        assertEquals(List.of(taskList.get(0), taskList.get(1)), taskList.find("book"));
+        assertEquals(List.of(1, 2), taskList.findIndexes("book"));
     }
 
     @Test
