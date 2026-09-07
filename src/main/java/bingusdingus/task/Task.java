@@ -39,7 +39,7 @@ public class Task {
     /**
      * Returns the task in the format used by the task storage file.
      *
-     * @return a pipe-delimited representation of this task
+     * @return a pipe-delimited representation of this task.
      */
     public String toFileFormat() {
         return "T | " + (isDone ? "1" : "0") + " | " + description;

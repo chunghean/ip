@@ -49,13 +49,25 @@ public class DialogBox extends HBox {
         this.getChildren().setAll(tmp);
     }
 
-    public static DialogBox getUserDialog(String s, Image i) {
-        return new DialogBox(s, i);
+    /** Returns a dialog box displaying a user's message.
+     *
+     * @param message the user's message.
+     * @param profilePicture the profile picture to display.
+     * @return the configured user dialog box.
+     */
+    public static DialogBox getUserDialog(String message, Image profilePicture) {
+        return new DialogBox(message, profilePicture);
     }
 
-    public static DialogBox getBingusDingusDialog(String s, Image i) {
-        var db = new DialogBox(s, i);
-        db.flip();
-        return db;
+    /** Returns a dialog box displaying Bingus Dingus's message.
+     *
+     * @param message Bingus Dingus's message.
+     * @param profilePicture the profile picture to display.
+     * @return the configured Bingus Dingus dialog box.
+     */
+    public static DialogBox getBingusDingusDialog(String message, Image profilePicture) {
+        var dialogBox = new DialogBox(message, profilePicture);
+        dialogBox.flip();
+        return dialogBox;
     }
 }

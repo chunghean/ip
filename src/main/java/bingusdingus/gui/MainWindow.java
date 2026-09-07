@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
+/** Displays the graphical user interface for Bingus Dingus. */
 public class MainWindow extends AnchorPane {
     @FXML
     private ScrollPane scrollPane;
@@ -24,19 +25,24 @@ public class MainWindow extends AnchorPane {
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.jpg"));
     private Image bingusDingusImage = new Image(this.getClass().getResourceAsStream("/images/BingusDingus.jpg"));
 
+    /** Initializes the dialog scroll position binding after the FXML view is loaded. */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the BingusDingus instance */
-    public void setBingusDingus(BingusDingus b) {
-        bingusDingus = b;
+    /** Sets the Bingus Dingus instance used to process user commands.
+     *
+     * @param bingusDingus the application instance to use.
+     */
+    public void setBingusDingus(BingusDingus bingusDingus) {
+        this.bingusDingus = bingusDingus;
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing BingusDingus's reply and then appends them to
-     * the dialog container. Clears the user input after processing.
+     * Creates two dialog boxes, one echoing user input and the other containing
+     * Bingus Dingus's reply, then appends them to the dialog container.
+     * Clears the user input after processing.
      */
     @FXML
     private void handleUserInput() {

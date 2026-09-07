@@ -35,9 +35,9 @@ public final class DateTimeParser {
      * <p>Date-only values are represented at midnight so that one typed value can
      * support both deadlines and event start/end times.</p>
      *
-     * @param text the date or date/time entered by the user
-     * @return the parsed local date/time
-     * @throws DateTimeParseException if the value is not in a supported format
+     * @param text the date or date/time entered by the user.
+     * @return the parsed local date/time.
+     * @throws DateTimeParseException if the value is not in a supported format.
      */
     public static LocalDateTime parse(String text) {
         String value = text == null ? "" : text.trim();
