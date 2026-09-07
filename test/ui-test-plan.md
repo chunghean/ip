@@ -13,6 +13,8 @@ deadline return book /by 2/12/2019 1800
 bye
 ```
 
+Expected output:
+
 ```text
         .-""""-.
        /  o  o  \
@@ -38,6 +40,8 @@ Inputs:
 event project meeting /from 2019-10-15 1400 /to 2019-10-15 1600
 bye
 ```
+
+Expected output:
 
 ```text
         .-""""-.
@@ -84,11 +88,11 @@ Hey there, I'm Bingus Dingusss.
 How can I help ya?
 I've got no idea watchu talkin' about
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
-bingusdingus.task.Deadline requires a description and a date
+deadline requires a description and a date
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
-bingusdingus.task.Deadline date/time must use yyyy-mm-dd or d/M/yyyy HHmm
+deadline date/time must use yyyy-mm-dd or d/M/yyyy HHmm
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
-bingusdingus.task.Event requires a description, start, and end
+event requires a description, start, and end
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
 bingusdingus.task.Event date/time must use yyyy-mm-dd or d/M/yyyy HHmm
 Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.

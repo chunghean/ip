@@ -13,8 +13,8 @@ public class Parser {
     /**
      * Identifies the type of command without performing the requested action.
      *
-     * @param command the command entered by the user
-     * @return the command type
+     * @param command the command entered by the user.
+     * @return the command type.
      */
     public CommandType parseCommandType(String command) {
         if (command == null) {
@@ -45,9 +45,9 @@ public class Parser {
     /**
      * Parses a task command and creates the corresponding task subtype.
      *
-     * @param command the command entered by the user
-     * @return the task represented by the command
-     * @throws InvalidTaskCommandException if the command is invalid
+     * @param command the command entered by the user.
+     * @return the task represented by the command.
+     * @throws InvalidTaskCommandException if the command is invalid.
      */
     public Task parseTask(String command) throws InvalidTaskCommandException {
         if (command == null) {

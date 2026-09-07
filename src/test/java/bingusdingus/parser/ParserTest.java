@@ -11,7 +11,6 @@ import bingusdingus.task.Event;
 import bingusdingus.task.Task;
 import bingusdingus.task.Todo;
 
-
 /** Tests command classification and conversion of commands into tasks. */
 class ParserTest {
     private final Parser parser = new Parser();
