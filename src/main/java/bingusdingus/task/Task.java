@@ -7,6 +7,8 @@ public class Task {
 
     /** Creates an incomplete task. */
     public Task(String description) {
+        // Every task must have a meaningful description for display and storage.
+        assert description != null && !description.isBlank();
         this.description = description;
         this.isDone = false;
     }

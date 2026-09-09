@@ -28,7 +28,10 @@ public class TaskList {
         if (task == null) {
             throw new IllegalArgumentException("Cannot add a null task");
         }
+        int previousSize = tasks.size();
         tasks.add(task);
+        // Adding must append exactly one task and preserve the caller's task object.
+        assert tasks.size() == previousSize + 1 && tasks.get(previousSize) == task;
         try {
             save();
         } catch (IllegalStateException e) {
@@ -44,7 +47,10 @@ public class TaskList {
 
     /** Removes and returns the task at the specified zero-based index. */
     public Task remove(int index) {
+        int previousSize = tasks.size();
         Task removedTask = tasks.remove(index);
+        // A successful removal changes the list size by exactly one.
+        assert tasks.size() == previousSize - 1;
         try {
             save();
         } catch (IllegalStateException e) {
@@ -59,6 +65,8 @@ public class TaskList {
         Task task = tasks.get(index);
         boolean wasDone = task.isDone();
         task.markAsDone();
+        // The completed-state mutator must leave the selected task marked done.
+        assert task.isDone();
         try {
             save();
         } catch (IllegalStateException e) {
@@ -74,6 +82,8 @@ public class TaskList {
         Task task = tasks.get(index);
         boolean wasDone = task.isDone();
         task.markAsNotDone();
+        // The incomplete-state mutator must leave the selected task marked not done.
+        assert !task.isDone();
         try {
             save();
         } catch (IllegalStateException e) {
@@ -91,11 +101,15 @@ public class TaskList {
 
     /** Returns the zero-based indexes of tasks whose descriptions contain the keyword. */
     public List<Integer> findIndexes(String keyword) {
+        // Search results must refer only to valid positions in the current list.
+        assert keyword != null;
         String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
-        return IntStream.range(0, tasks.size())
+        List<Integer> matchingIndexes = IntStream.range(0, tasks.size())
                 .filter(index -> tasks.get(index).getDescription().toLowerCase(Locale.ROOT).contains(normalizedKeyword))
                 .boxed()
                 .toList();
+        assert matchingIndexes.stream().allMatch(index -> index >= 0 && index < tasks.size());
+        return matchingIndexes;
     }
 
     /**
