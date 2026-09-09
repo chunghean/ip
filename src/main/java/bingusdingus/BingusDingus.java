@@ -10,6 +10,8 @@ import bingusdingus.ui.Ui;
 
 /** Runs the Bingus Dingus command-line task manager. */
 public class BingusDingus {
+    private static final String INVALID_COMMAND_MESSAGE = "I've got no idea watchu talkin' about";
+
     private final TaskList taskList;
     private final Parser parser;
     private final Ui ui;
@@ -40,29 +42,35 @@ public class BingusDingus {
     public String getResponse(String input) {
         CommandType commandType = parser.parseCommandType(input);
 
-        if (commandType == CommandType.BYE) {
-            return ui.showGoodbye();
-        } else if (commandType == CommandType.LIST) {
-            return ui.showTasks(taskList);
-        } else if (commandType == CommandType.FIND) {
-            String keyword = input.substring(5).trim();
-            return keyword.isEmpty()
-                    ? ui.showMissingFindKeyword()
-                    : ui.showMatchingTasks(taskList, taskList.findIndexes(keyword));
-        } else if (commandType == CommandType.MARK || commandType == CommandType.UNMARK) {
-            return handleMarkCommand(input, commandType);
-        } else if (commandType == CommandType.DELETE) {
-            return handleDeleteCommand(input);
-        } else if (commandType == CommandType.TASK) {
-            return handleAddCommand(input);
-        }
+        return switch (commandType) {
+            case BYE -> ui.showGoodbye();
+            case LIST -> ui.showTasks(taskList);
+            case FIND -> handleFindCommand(input);
+            case MARK, UNMARK -> handleMarkCommand(input, commandType);
+            case DELETE -> handleDeleteCommand(input);
+            case TASK -> handleAddCommand(input);
+            case UNKNOWN -> ui.showInvalidCommand(INVALID_COMMAND_MESSAGE);
+        };
+    }
 
-        return ui.showInvalidCommand("I've got no idea watchu talkin' about");
+    /** Handles a find command and displays the matching tasks. */
+    private String handleFindCommand(String input) {
+        String keyword = getCommandArgument(input, "find");
+        if (keyword.isEmpty()) {
+            return ui.showMissingFindKeyword();
+        }
+        return ui.showMatchingTasks(taskList, taskList.findIndexes(keyword));
+    }
+
+    /** Returns the trimmed argument following a command word. */
+    private String getCommandArgument(String input, String command) {
+        return input.substring(command.length()).trim();
     }
 
     private String handleMarkCommand(String input, CommandType commandType) {
         boolean markingDone = commandType == CommandType.MARK;
-        String taskNumberText = input.substring(markingDone ? 5 : 7).trim();
+        String command = markingDone ? "mark" : "unmark";
+        String taskNumberText = getCommandArgument(input, command);
         try {
             int taskIndex = Integer.parseInt(taskNumberText) - 1;
             if (taskIndex < 0 || taskIndex >= taskList.size()) {
@@ -87,7 +95,7 @@ public class BingusDingus {
 
     private String handleDeleteCommand(String input) {
         try {
-            int taskIndex = Integer.parseInt(input.substring(7).trim()) - 1;
+            int taskIndex = Integer.parseInt(getCommandArgument(input, "delete")) - 1;
             if (taskIndex < 0 || taskIndex >= taskList.size()) {
                 return ui.showInvalidTaskNumber();
             }
