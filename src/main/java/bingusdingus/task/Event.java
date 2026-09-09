@@ -23,6 +23,9 @@ public class Event extends Task {
         if (!this.end.isAfter(this.start)) {
             throw new IllegalArgumentException("Event end must be after start");
         }
+
+        // This invariant must hold for every event so its time interval is meaningful.
+        assert this.end.isAfter(this.start);
     }
 
     /** Returns the event task's display text. */

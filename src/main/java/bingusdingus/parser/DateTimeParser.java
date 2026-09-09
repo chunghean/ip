@@ -51,7 +51,10 @@ public final class DateTimeParser {
 
         for (DateTimeFormatter formatter : DATE_FORMATS) {
             try {
-                return LocalDate.parse(value, formatter).atStartOfDay();
+                LocalDateTime parsedValue = LocalDate.parse(value, formatter).atStartOfDay();
+                // Date-only input is normalized to midnight before it reaches a task.
+                assert parsedValue.toLocalTime().equals(LocalTime.MIDNIGHT);
+                return parsedValue;
             } catch (DateTimeParseException ignored) {
                 // Try the next supported format.
             }
