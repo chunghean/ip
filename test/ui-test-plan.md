@@ -354,3 +354,55 @@ Here are the tasks in your list:
 3. [E][X] valid event (from: Oct 15 2019 9:00 AM to: Oct 15 2019 10:00 AM)
 Bye bye!
 ```
+
+## Test case 10: Undo the most recent state-changing command
+
+Aim: Verify that undo restores a deleted task at its original position, restores completion state,
+and cannot be used twice for the same command.
+
+Setup: Start with no existing `data/bingusdingus.txt` file.
+
+Inputs:
+
+```text
+todo first task
+todo second task
+delete 1
+undo
+mark 1
+undo
+undo
+list
+bye
+```
+
+Expected output:
+
+```text
+        .-""""-.
+       /  o  o  \\
+      |    ∆     |     BINGUS
+      |  \___/   |     DINGUS
+       \        /
+        '-.__.-'
+Hey there, I'm Bingus Dingusss.
+How can I help ya?
+Got it. I've added this task:
+  [T][ ] first task
+Now you have 1 tasks in the list.
+Got it. I've added this task:
+  [T][ ] second task
+Now you have 2 tasks in the list.
+I've removed this task:
+  first task
+Now you have 1 tasks in the list.
+I've undone your last command.
+Nice! I've marked this task as done:
+[T][X] first task
+I've undone your last command.
+There is nothing to undo.
+Here are the tasks in your list:
+1. [T][ ] first task
+2. [T][ ] second task
+Bye bye!
+```

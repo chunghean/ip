@@ -8,6 +8,7 @@ public enum CommandType {
     MARK,
     UNMARK,
     DELETE,
+    UNDO,
     TASK,
     UNKNOWN
 }

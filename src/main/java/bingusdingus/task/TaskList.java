@@ -54,6 +54,21 @@ public class TaskList {
         return removedTask;
     }
 
+    /** Inserts a task at the specified zero-based index and saves the list. */
+    public void insert(int index, Task task) {
+        if (task == null) {
+            throw new IllegalArgumentException("Cannot insert a null task");
+        }
+
+        tasks.add(index, task);
+        try {
+            save();
+        } catch (IllegalStateException e) {
+            tasks.remove(index);
+            throw e;
+        }
+    }
+
     /** Marks the task at the specified zero-based index as done and saves the list. */
     public void markAsDone(int index) {
         Task task = tasks.get(index);
@@ -83,6 +98,28 @@ public class TaskList {
         } catch (IllegalStateException e) {
             if (wasDone) {
                 task.markAsDone();
+            }
+            throw e;
+        }
+    }
+
+    /** Sets the completion state of the task at the specified zero-based index and saves the list. */
+    public void setDone(int index, boolean isDone) {
+        Task task = tasks.get(index);
+        boolean wasDone = task.isDone();
+        if (isDone) {
+            task.markAsDone();
+        } else {
+            task.markAsNotDone();
+        }
+
+        try {
+            save();
+        } catch (IllegalStateException e) {
+            if (wasDone) {
+                task.markAsDone();
+            } else {
+                task.markAsNotDone();
             }
             throw e;
         }

@@ -19,6 +19,8 @@ class ParserTest {
     void parseCommandType_recognizesSupportedCommandsAndRejectsUnknownCommands() {
         assertEquals(CommandType.BYE, parser.parseCommandType("bye"));
         assertEquals(CommandType.LIST, parser.parseCommandType("list"));
+        assertEquals(CommandType.UNDO, parser.parseCommandType("undo"));
+        assertEquals(CommandType.UNKNOWN, parser.parseCommandType("undo 1"));
         assertEquals(CommandType.FIND, parser.parseCommandType("find book"));
         assertEquals(CommandType.MARK, parser.parseCommandType("mark 1"));
         assertEquals(CommandType.UNMARK, parser.parseCommandType("unmark 1"));

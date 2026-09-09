@@ -5,6 +5,7 @@ import java.util.Scanner;
 import bingusdingus.parser.CommandType;
 import bingusdingus.parser.InvalidTaskCommandException;
 import bingusdingus.parser.Parser;
+import bingusdingus.task.Task;
 import bingusdingus.task.TaskList;
 import bingusdingus.ui.Ui;
 
@@ -15,6 +16,7 @@ public class BingusDingus {
     private final TaskList taskList;
     private final Parser parser;
     private final Ui ui;
+    private Runnable lastUndo;
 
     /** Creates an application with its parser, task list, and response formatter. */
     public BingusDingus() {
@@ -48,6 +50,7 @@ public class BingusDingus {
             case FIND -> handleFindCommand(input);
             case MARK, UNMARK -> handleMarkCommand(input, commandType);
             case DELETE -> handleDeleteCommand(input);
+            case UNDO -> handleUndoCommand();
             case TASK -> handleAddCommand(input);
             case UNKNOWN -> ui.showInvalidCommand(INVALID_COMMAND_MESSAGE);
         };
@@ -102,6 +105,7 @@ public class BingusDingus {
         }
 
         taskList.markAsDone(taskIndex);
+        lastUndo = () -> taskList.setDone(taskIndex, false);
         return ui.showTaskMarkedDone(taskList.get(taskIndex));
     }
 
@@ -112,6 +116,7 @@ public class BingusDingus {
         }
 
         taskList.markAsNotDone(taskIndex);
+        lastUndo = () -> taskList.setDone(taskIndex, true);
         return ui.showTaskMarkedNotDone(taskList.get(taskIndex));
     }
 
@@ -121,7 +126,9 @@ public class BingusDingus {
             if (taskIndex < 0 || taskIndex >= taskList.size()) {
                 return ui.showInvalidTaskNumber();
             }
-            String deletedDescription = taskList.remove(taskIndex).getDescription();
+            Task deletedTask = taskList.remove(taskIndex);
+            lastUndo = () -> taskList.insert(taskIndex, deletedTask);
+            String deletedDescription = deletedTask.getDescription();
             return ui.showTaskDeleted(deletedDescription, taskList.size());
         } catch (NumberFormatException e) {
             return ui.showInvalidTaskNumberFormat();
@@ -132,11 +139,29 @@ public class BingusDingus {
 
     private String handleAddCommand(String input) {
         try {
-            taskList.add(parser.parseTask(input));
+            Task task = parser.parseTask(input);
+            int taskIndex = taskList.size();
+            taskList.add(task);
+            lastUndo = () -> taskList.remove(taskIndex);
             return ui.showTaskAdded(taskList.get(taskList.size() - 1), taskList.size());
         } catch (InvalidTaskCommandException | IllegalStateException e) {
             return e instanceof InvalidTaskCommandException
                     ? ui.showInvalidCommand(e.getMessage()) : ui.showStorageError();
+        }
+    }
+
+    /** Undoes the most recent successful state-changing command. */
+    private String handleUndoCommand() {
+        if (lastUndo == null) {
+            return ui.showNothingToUndo();
+        }
+
+        try {
+            lastUndo.run();
+            lastUndo = null;
+            return ui.showUndoSuccessful();
+        } catch (IllegalStateException e) {
+            return ui.showStorageError();
         }
     }
 }

@@ -73,6 +73,16 @@ public class Ui {
                 + "Now you have " + remainingTasks + " tasks in the list.";
     }
 
+    /** Displays the result of undoing the most recent state-changing command. */
+    public String showUndoSuccessful() {
+        return "I've undone your last command.";
+    }
+
+    /** Displays a message when there is no state-changing command to undo. */
+    public String showNothingToUndo() {
+        return "There is nothing to undo.";
+    }
+
     /** Displays an error for an invalid task number. */
     public String showInvalidTaskNumber() {
         return "Sorry, that task number is invalid.";

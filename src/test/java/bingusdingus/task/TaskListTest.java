@@ -54,6 +54,19 @@ class TaskListTest {
     }
 
     @Test
+    void taskList_insertAndSetDoneUpdateTheListAndSave() throws IOException {
+        TaskList taskList = new TaskList();
+        taskList.add(new Todo("first task"));
+        taskList.insert(0, new Todo("inserted task"));
+        taskList.setDone(0, true);
+
+        assertEquals("inserted task", taskList.get(0).getDescription());
+        assertTrue(taskList.get(0).isDone());
+        assertEquals(List.of("T | 1 | inserted task", "T | 0 | first task"),
+                Files.readAllLines(STORAGE_PATH, StandardCharsets.UTF_8));
+    }
+
+    @Test
     void taskList_rejectsNullTasks() {
         TaskList taskList = new TaskList();
         assertThrows(IllegalArgumentException.class, () -> taskList.add(null));
