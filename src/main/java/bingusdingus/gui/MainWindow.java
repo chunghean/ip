@@ -31,7 +31,8 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Sets the Bingus Dingus instance used to process user commands.
+    /**
+     * Sets the Bingus Dingus instance used to process user commands.
      *
      * @param bingusDingus the application instance to use.
      */

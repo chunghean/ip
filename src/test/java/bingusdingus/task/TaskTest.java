@@ -47,19 +47,16 @@ class TaskTest {
     void event_rejectsEndAtOrBeforeStart() {
         LocalDateTime start = LocalDateTime.of(2026, 9, 7, 15, 0);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> new Event("meeting", start, start));
-        assertThrows(IllegalArgumentException.class,
-                () -> new Event("meeting", start, start.minusMinutes(1)));
+        assertThrows(IllegalArgumentException.class, () -> new Event("meeting", start, start));
+        assertThrows(IllegalArgumentException.class, () -> new Event("meeting", start, start.minusMinutes(1)));
     }
 
     @Test
     void deadlineAndEvent_rejectNullDateTimes() {
-        assertThrows(NullPointerException.class,
-                () -> new Deadline("submit report", (LocalDateTime) null));
-        assertThrows(NullPointerException.class,
-                () -> new Event("meeting", null, LocalDateTime.of(2026, 9, 7, 16, 0)));
-        assertThrows(NullPointerException.class,
-                () -> new Event("meeting", LocalDateTime.of(2026, 9, 7, 15, 0), null));
+        assertThrows(NullPointerException.class, () -> new Deadline("submit report", (LocalDateTime) null));
+        assertThrows(NullPointerException.class, () ->
+                new Event("meeting", null, LocalDateTime.of(2026, 9, 7, 16, 0)));
+        assertThrows(NullPointerException.class, () ->
+                new Event("meeting", LocalDateTime.of(2026, 9, 7, 15, 0), null));
     }
 }

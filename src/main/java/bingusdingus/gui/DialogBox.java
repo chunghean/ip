@@ -49,7 +49,8 @@ public class DialogBox extends HBox {
         this.getChildren().setAll(tmp);
     }
 
-    /** Returns a dialog box displaying a user's message.
+    /**
+     * Returns a dialog box displaying a user's message.
      *
      * @param message the user's message.
      * @param profilePicture the profile picture to display.
@@ -59,7 +60,8 @@ public class DialogBox extends HBox {
         return new DialogBox(message, profilePicture);
     }
 
-    /** Returns a dialog box displaying Bingus Dingus's message.
+    /**
+     * Returns a dialog box displaying Bingus Dingus's message.
      *
      * @param message Bingus Dingus's message.
      * @param profilePicture the profile picture to display.
