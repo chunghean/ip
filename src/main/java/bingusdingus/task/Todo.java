@@ -11,6 +11,6 @@ public class Todo extends Task {
     /** Returns the todo task's display text. */
     @Override
     public String toString() {
-        return "[T][" + (this.isDone() ? "X] " : " ] ") + this.getDescription();
+        return "[T][" + this.getStatusIcon() + "] " + this.getDescription();
     }
 }
