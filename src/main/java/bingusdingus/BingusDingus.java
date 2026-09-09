@@ -68,29 +68,51 @@ public class BingusDingus {
     }
 
     private String handleMarkCommand(String input, CommandType commandType) {
-        boolean markingDone = commandType == CommandType.MARK;
-        String command = markingDone ? "mark" : "unmark";
-        String taskNumberText = getCommandArgument(input, command);
         try {
-            int taskIndex = Integer.parseInt(taskNumberText) - 1;
-            if (taskIndex < 0 || taskIndex >= taskList.size()) {
+            String command = commandType == CommandType.MARK ? "mark" : "unmark";
+            int taskIndex = parseTaskIndex(input, command);
+            if (!isValidTaskIndex(taskIndex)) {
                 return ui.showInvalidTaskNumber();
-            } else if (markingDone) {
-                if (taskList.get(taskIndex).isDone()) {
-                    return ui.showTaskAlreadyDone();
-                }
-                taskList.markAsDone(taskIndex);
-                return ui.showTaskMarkedDone(taskList.get(taskIndex));
-            } else if (!taskList.get(taskIndex).isDone()) {
-                return ui.showTaskNotDone();
             }
-            taskList.markAsNotDone(taskIndex);
-            return ui.showTaskMarkedNotDone(taskList.get(taskIndex));
+
+            return commandType == CommandType.MARK
+                    ? markTaskAsDone(taskIndex)
+                    : markTaskAsNotDone(taskIndex);
         } catch (NumberFormatException e) {
             return ui.showInvalidTaskNumberFormat();
         } catch (IllegalStateException e) {
             return ui.showStorageError();
         }
+    }
+
+    /** Returns the zero-based task index represented by a command argument. */
+    private int parseTaskIndex(String input, String command) {
+        return Integer.parseInt(getCommandArgument(input, command)) - 1;
+    }
+
+    /** Returns whether a zero-based task index refers to an existing task. */
+    private boolean isValidTaskIndex(int taskIndex) {
+        return taskIndex >= 0 && taskIndex < taskList.size();
+    }
+
+    /** Marks a task as done and returns the corresponding response. */
+    private String markTaskAsDone(int taskIndex) {
+        if (taskList.get(taskIndex).isDone()) {
+            return ui.showTaskAlreadyDone();
+        }
+
+        taskList.markAsDone(taskIndex);
+        return ui.showTaskMarkedDone(taskList.get(taskIndex));
+    }
+
+    /** Marks a task as not done and returns the corresponding response. */
+    private String markTaskAsNotDone(int taskIndex) {
+        if (!taskList.get(taskIndex).isDone()) {
+            return ui.showTaskNotDone();
+        }
+
+        taskList.markAsNotDone(taskIndex);
+        return ui.showTaskMarkedNotDone(taskList.get(taskIndex));
     }
 
     private String handleDeleteCommand(String input) {
