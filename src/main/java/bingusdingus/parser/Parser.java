@@ -55,40 +55,55 @@ public class Parser {
         }
 
         if (command.startsWith("todo ")) {
-            String description = command.substring(5).trim();
-            if (description.isEmpty()) {
-                throw new InvalidTaskCommandException("what todo?");
-            }
-            return new Todo(description);
+            return parseTodo(command);
         }
 
         if (command.startsWith("deadline ")) {
-            String[] parts = command.substring(9).trim().split("/by", 2);
-            if (parts.length != 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-                throw new InvalidTaskCommandException("deadline requires a description and a date");
-            }
-            try {
-                return new Deadline(parts[0].trim(), parts[1].trim());
-            } catch (DateTimeParseException e) {
-                throw new InvalidTaskCommandException("deadline date/time must use yyyy-mm-dd or d/M/yyyy HHmm");
-            }
+            return parseDeadline(command);
         }
 
         if (command.startsWith("event ")) {
-            String[] fromParts = command.substring(6).trim().split("/from", 2);
-            String[] toParts = fromParts.length == 2 ? fromParts[1].split("/to", 2) : new String[0];
-            if (fromParts.length != 2 || toParts.length != 2
-                    || fromParts[0].trim().isEmpty() || toParts[0].trim().isEmpty()
-                    || toParts[1].trim().isEmpty()) {
-                throw new InvalidTaskCommandException("event requires a description, start, and end");
-            }
-            try {
-                return new Event(fromParts[0].trim(), toParts[0].trim(), toParts[1].trim());
-            } catch (DateTimeParseException | IllegalArgumentException e) {
-                throw new InvalidTaskCommandException("event date/time must use yyyy-mm-dd or d/M/yyyy HHmm");
-            }
+            return parseEvent(command);
         }
 
         throw new InvalidTaskCommandException("I've got no idea watchu talkin' about");
+    }
+
+    /** Parses a todo command into a todo task. */
+    private Task parseTodo(String command) throws InvalidTaskCommandException {
+        String description = command.substring(5).trim();
+        if (description.isEmpty()) {
+            throw new InvalidTaskCommandException("what todo?");
+        }
+        return new Todo(description);
+    }
+
+    /** Parses a deadline command into a deadline task. */
+    private Task parseDeadline(String command) throws InvalidTaskCommandException {
+        String[] parts = command.substring(9).trim().split("/by", 2);
+        if (parts.length != 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
+            throw new InvalidTaskCommandException("deadline requires a description and a date");
+        }
+        try {
+            return new Deadline(parts[0].trim(), parts[1].trim());
+        } catch (DateTimeParseException e) {
+            throw new InvalidTaskCommandException("deadline date/time must use yyyy-mm-dd or d/M/yyyy HHmm");
+        }
+    }
+
+    /** Parses an event command into an event task. */
+    private Task parseEvent(String command) throws InvalidTaskCommandException {
+        String[] fromParts = command.substring(6).trim().split("/from", 2);
+        String[] toParts = fromParts.length == 2 ? fromParts[1].split("/to", 2) : new String[0];
+        if (fromParts.length != 2 || toParts.length != 2
+                || fromParts[0].trim().isEmpty() || toParts[0].trim().isEmpty()
+                || toParts[1].trim().isEmpty()) {
+            throw new InvalidTaskCommandException("event requires a description, start, and end");
+        }
+        try {
+            return new Event(fromParts[0].trim(), toParts[0].trim(), toParts[1].trim());
+        } catch (DateTimeParseException | IllegalArgumentException e) {
+            throw new InvalidTaskCommandException("event date/time must use yyyy-mm-dd or d/M/yyyy HHmm");
+        }
     }
 }
