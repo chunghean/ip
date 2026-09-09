@@ -23,7 +23,7 @@ public class Deadline extends Task {
     /** Returns the deadline task's display text. */
     @Override
     public String toString() {
-        return "[D][" + (this.isDone() ? "X] " : " ] ") + this.getDescription()
+        return "[D][" + this.getStatusIcon() + "] " + this.getDescription()
                 + " (by: " + DateTimeParser.format(this.deadline) + ")";
     }
 

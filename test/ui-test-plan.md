@@ -87,17 +87,35 @@ Expected output:
 Hey there, I'm Bingus Dingusss.
 How can I help ya?
 I've got no idea watchu talkin' about
-Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
+Use:
+todo <description>
+deadline <description> /by <date>, or
+event <description> /from <start> /to <end>.
 deadline requires a description and a date
-Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
+Use:
+todo <description>
+deadline <description> /by <date>, or
+event <description> /from <start> /to <end>.
 deadline date/time must use yyyy-mm-dd or d/M/yyyy HHmm
-Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
+Use:
+todo <description>
+deadline <description> /by <date>, or
+event <description> /from <start> /to <end>.
 event requires a description, start, and end
-Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
-bingusdingus.task.Event date/time must use yyyy-mm-dd or d/M/yyyy HHmm
-Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
+Use:
+todo <description>
+deadline <description> /by <date>, or
+event <description> /from <start> /to <end>.
+event date/time must use yyyy-mm-dd or d/M/yyyy HHmm
+Use:
+todo <description>
+deadline <description> /by <date>, or
+event <description> /from <start> /to <end>.
 I've got no idea watchu talkin' about
-Use: todo <description>, deadline <description> /by <date>, or event <description> /from <start> /to <end>.
+Use:
+todo <description>
+deadline <description> /by <date>, or
+event <description> /from <start> /to <end>.
 Here are the tasks in your list:
 Bye bye!
 ```

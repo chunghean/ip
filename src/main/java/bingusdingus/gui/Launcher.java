@@ -6,7 +6,8 @@ import javafx.application.Application;
  * A launcher class to workaround classpath issues.
  */
 public class Launcher {
-    /** Launches the JavaFX application.
+    /**
+     * Launches the JavaFX application.
      *
      * @param args command-line arguments passed to the application.
      */

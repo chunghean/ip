@@ -31,7 +31,7 @@ public class Event extends Task {
     /** Returns the event task's display text. */
     @Override
     public String toString() {
-        return "[E][" + (this.isDone() ? "X] " : " ] ") + this.getDescription()
+        return "[E][" + this.getStatusIcon() + "] " + this.getDescription()
                 + " (from: " + DateTimeParser.format(this.start)
                 + " to: " + DateTimeParser.format(this.end) + ")";
     }
