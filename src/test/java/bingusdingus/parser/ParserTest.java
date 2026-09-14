@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import bingusdingus.task.Deadline;
 import bingusdingus.task.Event;
@@ -96,9 +97,11 @@ class ParserTest {
 
     @Test
     void parseTask_rejectsDuplicatedParametersAndUnsupportedDescriptionCharacters() {
-        InvalidTaskCommandException duplicatedParameter = assertThrows(
-                InvalidTaskCommandException.class,
-                () -> parser.parseTask("deadline return book /by 2026-09-02 /by 2026-09-03"));
+        String duplicatedParameterCommand =
+                "deadline return book /by 2026-09-02 /by 2026-09-03";
+        Executable duplicatedParameterAction = () -> parser.parseTask(duplicatedParameterCommand);
+        InvalidTaskCommandException duplicatedParameter =
+                assertThrows(InvalidTaskCommandException.class, duplicatedParameterAction);
         assertEquals("deadline requires exactly one /by parameter", duplicatedParameter.getMessage());
 
         InvalidTaskCommandException unsupportedCharacter = assertThrows(

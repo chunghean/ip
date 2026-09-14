@@ -380,7 +380,7 @@ Expected output:
 
 ```text
         .-""""-.
-       /  o  o  \\
+       /  o  o  \
       |    ∆     |     BINGUS
       |  \___/   |     DINGUS
        \        /
