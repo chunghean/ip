@@ -10,6 +10,17 @@ import bingusdingus.task.Todo;
 /** Parses user commands into the appropriate task subtype. */
 public class Parser {
 
+    private static final String BYE_COMMAND = "bye";
+    private static final String LIST_COMMAND = "list";
+    private static final String UNDO_COMMAND = "undo";
+    private static final String FIND_COMMAND = "find";
+    private static final String MARK_COMMAND = "mark";
+    private static final String UNMARK_COMMAND = "unmark";
+    private static final String DELETE_COMMAND = "delete";
+    private static final String TODO_COMMAND = "todo";
+    private static final String DEADLINE_COMMAND = "deadline";
+    private static final String EVENT_COMMAND = "event";
+
     private static final String INVALID_COMMAND_MESSAGE = "I've got no idea watchu talkin' about";
 
     /**
@@ -23,23 +34,23 @@ public class Parser {
             return CommandType.UNKNOWN;
         }
 
-        if (command.equals("bye")) {
+        if (command.equals(BYE_COMMAND)) {
             return CommandType.BYE;
-        } else if (command.equals("list")) {
+        } else if (command.equals(LIST_COMMAND)) {
             return CommandType.LIST;
-        } else if (command.equals("undo")) {
+        } else if (command.equals(UNDO_COMMAND)) {
             return CommandType.UNDO;
-        } else if (command.startsWith("find ")) {
+        } else if (command.startsWith(FIND_COMMAND + " ")) {
             return CommandType.FIND;
-        } else if (command.startsWith("mark ")) {
+        } else if (command.startsWith(MARK_COMMAND + " ")) {
             return CommandType.MARK;
-        } else if (command.startsWith("unmark ")) {
+        } else if (command.startsWith(UNMARK_COMMAND + " ")) {
             return CommandType.UNMARK;
-        } else if (command.startsWith("delete ")) {
+        } else if (command.startsWith(DELETE_COMMAND + " ")) {
             return CommandType.DELETE;
-        } else if (command.startsWith("todo ")
-                || command.startsWith("deadline ")
-                || command.startsWith("event ")) {
+        } else if (command.startsWith(TODO_COMMAND + " ")
+                || command.startsWith(DEADLINE_COMMAND + " ")
+                || command.startsWith(EVENT_COMMAND + " ")) {
             return CommandType.TASK;
         }
 
@@ -58,15 +69,15 @@ public class Parser {
             throw new InvalidTaskCommandException(INVALID_COMMAND_MESSAGE);
         }
 
-        if (command.startsWith("todo ")) {
+        if (command.startsWith(TODO_COMMAND + " ")) {
             return parseTodo(command);
         }
 
-        if (command.startsWith("deadline ")) {
+        if (command.startsWith(DEADLINE_COMMAND + " ")) {
             return parseDeadline(command);
         }
 
-        if (command.startsWith("event ")) {
+        if (command.startsWith(EVENT_COMMAND + " ")) {
             return parseEvent(command);
         }
 
@@ -84,9 +95,15 @@ public class Parser {
                 && !command.contains("\r");
     }
 
+    /** Returns the trimmed argument following the command word. */
+    public String getCommandArgument(String command) {
+        int separatorIndex = command.indexOf(' ');
+        return separatorIndex < 0 ? "" : command.substring(separatorIndex + 1).trim();
+    }
+
     /** Parses a todo command into a todo task. */
     private Task parseTodo(String command) throws InvalidTaskCommandException {
-        String description = command.substring(5).trim();
+        String description = getCommandArgument(command);
         if (description.isEmpty()) {
             throw new InvalidTaskCommandException("what todo?");
         }
@@ -99,7 +116,7 @@ public class Parser {
 
     /** Parses a deadline command into a deadline task. */
     private Task parseDeadline(String command) throws InvalidTaskCommandException {
-        String remainder = command.substring(9);
+        String remainder = getCommandArgument(command);
         int byParameterCount = countOccurrences(remainder, "/by");
         if (byParameterCount > 1) {
             throw new InvalidTaskCommandException("deadline requires exactly one /by parameter");
@@ -117,7 +134,7 @@ public class Parser {
 
     /** Parses an event command into an event task. */
     private Task parseEvent(String command) throws InvalidTaskCommandException {
-        String remainder = command.substring(6);
+        String remainder = getCommandArgument(command);
         int fromParameterCount = countOccurrences(remainder, "/from");
         int toParameterCount = countOccurrences(remainder, "/to");
         if (fromParameterCount > 1 || toParameterCount > 1) {

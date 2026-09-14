@@ -66,7 +66,7 @@ public class BingusDingus {
 
     /** Handles a find command and displays the matching tasks. */
     private String handleFindCommand(String input) {
-        String keyword = getCommandArgument(input, "find");
+        String keyword = parser.getCommandArgument(input);
         if (keyword.isEmpty()) {
             return ui.showMissingFindKeyword();
         }
@@ -80,8 +80,7 @@ public class BingusDingus {
 
     private String handleMarkCommand(String input, CommandType commandType) {
         try {
-            String command = commandType == CommandType.MARK ? "mark" : "unmark";
-            int taskIndex = parseTaskIndex(input, command);
+            int taskIndex = parseTaskIndex(input);
             if (!isValidTaskIndex(taskIndex)) {
                 return ui.showInvalidTaskNumber();
             }
@@ -97,8 +96,8 @@ public class BingusDingus {
     }
 
     /** Returns the zero-based task index represented by a command argument. */
-    private int parseTaskIndex(String input, String command) {
-        return Integer.parseInt(getCommandArgument(input, command)) - 1;
+    private int parseTaskIndex(String input) {
+        return Integer.parseInt(parser.getCommandArgument(input)) - 1;
     }
 
     /** Returns whether a zero-based task index refers to an existing task. */
@@ -130,7 +129,7 @@ public class BingusDingus {
 
     private String handleDeleteCommand(String input) {
         try {
-            int taskIndex = Integer.parseInt(getCommandArgument(input, "delete")) - 1;
+            int taskIndex = Integer.parseInt(parser.getCommandArgument(input)) - 1;
             if (taskIndex < 0 || taskIndex >= taskList.size()) {
                 return ui.showInvalidTaskNumber();
             }
