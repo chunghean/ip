@@ -36,8 +36,8 @@ class ParserTest {
     }
 
     @Test
-    void parseTask_createsEachTaskTypeWithTrimmedValues() throws InvalidTaskCommandException {
-        Task todo = parser.parseTask("todo   buy milk  ");
+    void parseTask_createsEachTaskTypeWithValidValues() throws InvalidTaskCommandException {
+        Task todo = parser.parseTask("todo buy milk");
         assertInstanceOf(Todo.class, todo);
         assertEquals("buy milk", todo.getDescription());
 
@@ -72,5 +72,25 @@ class ParserTest {
         InvalidTaskCommandException invalidEventRange = assertThrows(InvalidTaskCommandException.class, () ->
                 parser.parseTask("event meeting /from 2026-09-02 1000 /to 2026-09-02 0900"));
         assertEquals("event date/time must use yyyy-mm-dd or d/M/yyyy HHmm", invalidEventRange.getMessage());
+    }
+
+    @Test
+    void parseCommandType_rejectsMalformedWhitespaceAndNearMatches() {
+        assertEquals(CommandType.UNKNOWN, parser.parseCommandType(" list"));
+        assertEquals(CommandType.UNKNOWN, parser.parseCommandType("list "));
+        assertEquals(CommandType.UNKNOWN, parser.parseCommandType("todo  buy milk"));
+        assertEquals(CommandType.UNKNOWN, parser.parseCommandType("mark\t1"));
+        assertEquals(CommandType.MARK, parser.parseCommandType("mark 1 extra"));
+    }
+
+    @Test
+    void parseTask_rejectsMalformedWhitespace() {
+        InvalidTaskCommandException repeatedSpaces = assertThrows(
+                InvalidTaskCommandException.class, () -> parser.parseTask("todo  buy milk"));
+        assertEquals("I've got no idea watchu talkin' about", repeatedSpaces.getMessage());
+
+        InvalidTaskCommandException trailingSpace = assertThrows(
+                InvalidTaskCommandException.class, () -> parser.parseTask("todo buy milk "));
+        assertEquals("I've got no idea watchu talkin' about", trailingSpace.getMessage());
     }
 }

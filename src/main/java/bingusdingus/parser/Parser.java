@@ -10,6 +10,8 @@ import bingusdingus.task.Todo;
 /** Parses user commands into the appropriate task subtype. */
 public class Parser {
 
+    private static final String INVALID_COMMAND_MESSAGE = "I've got no idea watchu talkin' about";
+
     /**
      * Identifies the type of command without performing the requested action.
      *
@@ -17,7 +19,7 @@ public class Parser {
      * @return the command type.
      */
     public CommandType parseCommandType(String command) {
-        if (command == null) {
+        if (!isWellFormedCommand(command)) {
             return CommandType.UNKNOWN;
         }
 
@@ -52,8 +54,8 @@ public class Parser {
      * @throws InvalidTaskCommandException if the command is invalid.
      */
     public Task parseTask(String command) throws InvalidTaskCommandException {
-        if (command == null) {
-            throw new InvalidTaskCommandException("I've got no idea watchu talkin' about");
+        if (!isWellFormedCommand(command)) {
+            throw new InvalidTaskCommandException(INVALID_COMMAND_MESSAGE);
         }
 
         if (command.startsWith("todo ")) {
@@ -68,7 +70,18 @@ public class Parser {
             return parseEvent(command);
         }
 
-        throw new InvalidTaskCommandException("I've got no idea watchu talkin' about");
+        throw new InvalidTaskCommandException(INVALID_COMMAND_MESSAGE);
+    }
+
+    /** Returns whether a command uses the supported spacing and whitespace conventions. */
+    private boolean isWellFormedCommand(String command) {
+        return command != null
+                && !command.isBlank()
+                && command.equals(command.trim())
+                && !command.contains("  ")
+                && !command.contains("\t")
+                && !command.contains("\n")
+                && !command.contains("\r");
     }
 
     /** Parses a todo command into a todo task. */
