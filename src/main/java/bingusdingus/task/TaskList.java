@@ -83,40 +83,21 @@ public class TaskList {
 
     /** Marks the task at the specified zero-based index as done and saves the list. */
     public void markAsDone(int index) {
-        Task task = tasks.get(index);
-        boolean wasDone = task.isDone();
-        task.markAsDone();
-        // The completed-state mutator must leave the selected task marked done.
-        assert task.isDone();
-        try {
-            save();
-        } catch (IllegalStateException e) {
-            if (!wasDone) {
-                task.markAsNotDone();
-            }
-            throw e;
-        }
+        updateCompletionState(index, true);
     }
 
     /** Marks the task at the specified zero-based index as not done and saves the list. */
     public void markAsNotDone(int index) {
-        Task task = tasks.get(index);
-        boolean wasDone = task.isDone();
-        task.markAsNotDone();
-        // The incomplete-state mutator must leave the selected task marked not done.
-        assert !task.isDone();
-        try {
-            save();
-        } catch (IllegalStateException e) {
-            if (wasDone) {
-                task.markAsDone();
-            }
-            throw e;
-        }
+        updateCompletionState(index, false);
     }
 
     /** Sets the completion state of the task at the specified zero-based index and saves the list. */
     public void setDone(int index, boolean isDone) {
+        updateCompletionState(index, isDone);
+    }
+
+    /** Updates a task's completion state and restores it if saving fails. */
+    private void updateCompletionState(int index, boolean isDone) {
         Task task = tasks.get(index);
         boolean wasDone = task.isDone();
         if (isDone) {
@@ -124,6 +105,7 @@ public class TaskList {
         } else {
             task.markAsNotDone();
         }
+        assert task.isDone() == isDone;
 
         try {
             save();
