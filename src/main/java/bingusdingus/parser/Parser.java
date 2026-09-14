@@ -86,13 +86,16 @@ public class Parser {
 
     /** Returns whether a command uses the supported spacing and whitespace conventions. */
     private boolean isWellFormedCommand(String command) {
-        return command != null
-                && !command.isBlank()
-                && command.equals(command.trim())
-                && !command.contains("  ")
-                && !command.contains("\t")
-                && !command.contains("\n")
-                && !command.contains("\r");
+        if (command == null || command.isBlank()) {
+            return false;
+        }
+
+        boolean hasNoPadding = command.equals(command.trim());
+        boolean hasNoRepeatedSpaces = !command.contains("  ");
+        boolean hasNoTabs = !command.contains("\t");
+        boolean hasNoLineBreaks = !command.contains("\n") && !command.contains("\r");
+
+        return hasNoPadding && hasNoRepeatedSpaces && hasNoTabs && hasNoLineBreaks;
     }
 
     /** Returns the trimmed argument following the command word. */
