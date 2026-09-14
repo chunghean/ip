@@ -100,7 +100,8 @@ public class Parser {
     /** Parses a deadline command into a deadline task. */
     private Task parseDeadline(String command) throws InvalidTaskCommandException {
         String remainder = command.substring(9);
-        if (countOccurrences(remainder, "/by") != 1) {
+        int byParameterCount = countOccurrences(remainder, "/by");
+        if (byParameterCount > 1) {
             throw new InvalidTaskCommandException("deadline requires exactly one /by parameter");
         }
         String[] parts = remainder.split("/by", -1);
@@ -117,7 +118,9 @@ public class Parser {
     /** Parses an event command into an event task. */
     private Task parseEvent(String command) throws InvalidTaskCommandException {
         String remainder = command.substring(6);
-        if (countOccurrences(remainder, "/from") != 1 || countOccurrences(remainder, "/to") != 1) {
+        int fromParameterCount = countOccurrences(remainder, "/from");
+        int toParameterCount = countOccurrences(remainder, "/to");
+        if (fromParameterCount > 1 || toParameterCount > 1) {
             throw new InvalidTaskCommandException("event requires exactly one /from and one /to parameter");
         }
         String[] fromParts = remainder.split("/from", -1);
