@@ -146,8 +146,6 @@ public class TaskList {
 
     /** Returns whether two tasks have the same type and user-visible details. */
     private boolean haveSameDetails(Task firstTask, Task secondTask) {
-        String firstFormat = firstTask.toFileFormat().replaceFirst("\\| [01] \\|", "| status |");
-        String secondFormat = secondTask.toFileFormat().replaceFirst("\\| [01] \\|", "| status |");
-        return firstFormat.equals(secondFormat);
+        return firstTask.hasSameDetailsAs(secondTask);
     }
 }

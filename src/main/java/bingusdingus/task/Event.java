@@ -36,6 +36,14 @@ public class Event extends Task {
                 + " to: " + DateTimeParser.format(this.end) + ")";
     }
 
+    /** Returns whether this event has the same description and times as the supplied task. */
+    @Override
+    public boolean hasSameDetailsAs(Task other) {
+        return super.hasSameDetailsAs(other)
+                && start.equals(((Event) other).start)
+                && end.equals(((Event) other).end);
+    }
+
     /** Returns the event task in the format used by the task storage file. */
     @Override
     public String toFileFormat() {

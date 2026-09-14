@@ -59,4 +59,27 @@ class TaskTest {
         assertThrows(NullPointerException.class, () ->
                 new Event("meeting", LocalDateTime.of(2026, 9, 7, 15, 0), null));
     }
+
+    @Test
+    void hasSameDetailsAs_comparesTaskSpecificDetailsButIgnoresCompletionState() {
+        Todo incompleteTodo = new Todo("buy milk");
+        Todo completedTodo = new Todo("buy milk");
+        completedTodo.markAsDone();
+        Deadline sameDeadline = new Deadline("return book", LocalDateTime.of(2019, 6, 6, 0, 0));
+        Deadline differentDeadline = new Deadline("return book", LocalDateTime.of(2019, 6, 7, 0, 0));
+        Event sameEvent = new Event("meeting", LocalDateTime.of(2019, 6, 6, 9, 0),
+                LocalDateTime.of(2019, 6, 6, 10, 0));
+        Event differentEvent = new Event("meeting", LocalDateTime.of(2019, 6, 6, 9, 0),
+                LocalDateTime.of(2019, 6, 6, 11, 0));
+
+        assertTrue(incompleteTodo.hasSameDetailsAs(completedTodo));
+        assertFalse(incompleteTodo.hasSameDetailsAs(sameDeadline));
+        assertTrue(sameDeadline.hasSameDetailsAs(
+                new Deadline("return book", LocalDateTime.of(2019, 6, 6, 0, 0))));
+        assertFalse(sameDeadline.hasSameDetailsAs(differentDeadline));
+        assertTrue(sameEvent.hasSameDetailsAs(
+                new Event("meeting", LocalDateTime.of(2019, 6, 6, 9, 0),
+                        LocalDateTime.of(2019, 6, 6, 10, 0))));
+        assertFalse(sameEvent.hasSameDetailsAs(differentEvent));
+    }
 }

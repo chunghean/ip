@@ -45,6 +45,13 @@ public class Task {
         return description;
     }
 
+    /** Returns whether this task has the same type and details as the supplied task. */
+    public boolean hasSameDetailsAs(Task other) {
+        return other != null
+                && getClass() == other.getClass()
+                && description.equals(other.description);
+    }
+
     /**
      * Returns the task in the format used by the task storage file.
      *

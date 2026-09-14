@@ -27,6 +27,13 @@ public class Deadline extends Task {
                 + " (by: " + DateTimeParser.format(this.deadline) + ")";
     }
 
+    /** Returns whether this deadline has the same description and date as the supplied task. */
+    @Override
+    public boolean hasSameDetailsAs(Task other) {
+        return super.hasSameDetailsAs(other)
+                && deadline.equals(((Deadline) other).deadline);
+    }
+
     /** Returns the deadline task in the format used by the task storage file. */
     @Override
     public String toFileFormat() {
