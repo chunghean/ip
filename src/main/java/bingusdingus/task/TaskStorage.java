@@ -60,8 +60,8 @@ public class TaskStorage {
         Task task;
         try {
             task = createStoredTask(parts);
-        } catch (DateTimeParseException e) {
-            // Invalid typed date/time values are ignored just like other malformed records.
+        } catch (DateTimeParseException | IllegalArgumentException e) {
+            // Invalid typed values, including impossible event ranges, are ignored.
             task = null;
         }
 
