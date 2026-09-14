@@ -83,11 +83,6 @@ public class BingusDingus {
         return ui.showMatchingTasks(taskList, taskList.findIndexes(keyword));
     }
 
-    /** Returns the trimmed argument following a command word. */
-    private String getCommandArgument(String input, String command) {
-        return input.substring(command.length()).trim();
-    }
-
     private String handleMarkCommand(String input, CommandType commandType) {
         try {
             int taskIndex = parseTaskIndex(input);
