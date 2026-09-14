@@ -48,9 +48,7 @@ public class Parser {
             return CommandType.UNMARK;
         } else if (command.startsWith(DELETE_COMMAND + " ")) {
             return CommandType.DELETE;
-        } else if (command.startsWith(TODO_COMMAND + " ")
-                || command.startsWith(DEADLINE_COMMAND + " ")
-                || command.startsWith(EVENT_COMMAND + " ")) {
+        } else if (getTaskCommand(command) != null) {
             return CommandType.TASK;
         }
 
@@ -69,15 +67,16 @@ public class Parser {
             throw new InvalidTaskCommandException(INVALID_COMMAND_MESSAGE);
         }
 
-        if (command.startsWith(TODO_COMMAND + " ")) {
+        String taskCommand = getTaskCommand(command);
+        if (TODO_COMMAND.equals(taskCommand)) {
             return parseTodo(command);
         }
 
-        if (command.startsWith(DEADLINE_COMMAND + " ")) {
+        if (DEADLINE_COMMAND.equals(taskCommand)) {
             return parseDeadline(command);
         }
 
-        if (command.startsWith(EVENT_COMMAND + " ")) {
+        if (EVENT_COMMAND.equals(taskCommand)) {
             return parseEvent(command);
         }
 
@@ -96,6 +95,20 @@ public class Parser {
         boolean hasNoLineBreaks = !command.contains("\n") && !command.contains("\r");
 
         return hasNoPadding && hasNoRepeatedSpaces && hasNoTabs && hasNoLineBreaks;
+    }
+
+    /** Returns the task command keyword, or null when the command is not a task command. */
+    private String getTaskCommand(String command) {
+        if (command.startsWith(TODO_COMMAND + " ")) {
+            return TODO_COMMAND;
+        }
+        if (command.startsWith(DEADLINE_COMMAND + " ")) {
+            return DEADLINE_COMMAND;
+        }
+        if (command.startsWith(EVENT_COMMAND + " ")) {
+            return EVENT_COMMAND;
+        }
+        return null;
     }
 
     /** Returns the trimmed argument following the command word. */
