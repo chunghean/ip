@@ -95,9 +95,7 @@ public class BingusDingus {
                 return ui.showInvalidTaskNumber();
             }
 
-            return commandType == CommandType.MARK
-                    ? markTaskAsDone(taskIndex)
-                    : markTaskAsNotDone(taskIndex);
+            return updateTaskCompletion(taskIndex, commandType == CommandType.MARK);
         } catch (NumberFormatException e) {
             return ui.showInvalidTaskNumberFormat();
         } catch (IllegalStateException e) {
@@ -115,26 +113,16 @@ public class BingusDingus {
         return taskIndex >= 0 && taskIndex < taskList.size();
     }
 
-    /** Marks a task as done and returns the corresponding response. */
-    private String markTaskAsDone(int taskIndex) {
-        if (taskList.get(taskIndex).isDone()) {
-            return ui.showTaskAlreadyDone();
+    /** Updates a task's completion state and returns the corresponding response. */
+    private String updateTaskCompletion(int taskIndex, boolean isDone) {
+        Task task = taskList.get(taskIndex);
+        if (task.isDone() == isDone) {
+            return isDone ? ui.showTaskAlreadyDone() : ui.showTaskNotDone();
         }
 
-        taskList.markAsDone(taskIndex);
-        lastUndo = () -> taskList.setDone(taskIndex, false);
-        return ui.showTaskMarkedDone(taskList.get(taskIndex));
-    }
-
-    /** Marks a task as not done and returns the corresponding response. */
-    private String markTaskAsNotDone(int taskIndex) {
-        if (!taskList.get(taskIndex).isDone()) {
-            return ui.showTaskNotDone();
-        }
-
-        taskList.markAsNotDone(taskIndex);
-        lastUndo = () -> taskList.setDone(taskIndex, true);
-        return ui.showTaskMarkedNotDone(taskList.get(taskIndex));
+        taskList.setDone(taskIndex, isDone);
+        lastUndo = () -> taskList.setDone(taskIndex, !isDone);
+        return isDone ? ui.showTaskMarkedDone(task) : ui.showTaskMarkedNotDone(task);
     }
 
     private String handleDeleteCommand(String input) {
