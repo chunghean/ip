@@ -19,18 +19,18 @@ import org.junit.jupiter.api.Test;
 class TaskListTest {
     private static final Path STORAGE_PATH = Path.of(".", "data", "bingusdingus.txt");
     private byte[] originalStorage;
-    private boolean storageExisted;
+    private boolean wasStoragePresent;
 
     @BeforeEach
     void isolateStorage() throws IOException {
-        storageExisted = Files.exists(STORAGE_PATH);
-        originalStorage = storageExisted ? Files.readAllBytes(STORAGE_PATH) : null;
+        wasStoragePresent = Files.exists(STORAGE_PATH);
+        originalStorage = wasStoragePresent ? Files.readAllBytes(STORAGE_PATH) : null;
         Files.deleteIfExists(STORAGE_PATH);
     }
 
     @AfterEach
     void restoreStorage() throws IOException {
-        if (storageExisted) {
+        if (wasStoragePresent) {
             Files.createDirectories(STORAGE_PATH.getParent());
             Files.write(STORAGE_PATH, originalStorage);
         } else {
