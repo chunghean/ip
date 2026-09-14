@@ -2,6 +2,9 @@ package bingusdingus.task;
 
 /** Represents a task in the task list. */
 public class Task {
+    private static final String INCOMPLETE_STATUS = "0";
+    private static final String COMPLETE_STATUS = "1";
+
     private final String description;
     private boolean isDone;
 
@@ -48,6 +51,12 @@ public class Task {
      * @return a pipe-delimited representation of this task.
      */
     public String toFileFormat() {
-        return "T | " + (isDone ? "1" : "0") + " | " + description;
+        return getBaseFileFormat("T");
+    }
+
+    /** Returns the shared storage prefix for this task and the supplied task type. */
+    protected String getBaseFileFormat(String taskType) {
+        String status = isDone ? COMPLETE_STATUS : INCOMPLETE_STATUS;
+        return taskType + " | " + status + " | " + description;
     }
 }

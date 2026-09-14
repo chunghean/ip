@@ -39,8 +39,7 @@ public class Event extends Task {
     /** Returns the event task in the format used by the task storage file. */
     @Override
     public String toFileFormat() {
-        return "E | " + (this.isDone() ? "1" : "0") + " | " + this.getDescription()
-                + " | " + DateTimeParser.formatForStorage(this.start)
+        return getBaseFileFormat("E") + " | " + DateTimeParser.formatForStorage(this.start)
                 + " | " + DateTimeParser.formatForStorage(this.end);
     }
 }

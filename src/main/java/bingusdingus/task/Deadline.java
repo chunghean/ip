@@ -30,7 +30,6 @@ public class Deadline extends Task {
     /** Returns the deadline task in the format used by the task storage file. */
     @Override
     public String toFileFormat() {
-        return "D | " + (this.isDone() ? "1" : "0") + " | " + this.getDescription()
-                + " | " + DateTimeParser.formatForStorage(this.deadline);
+        return getBaseFileFormat("D") + " | " + DateTimeParser.formatForStorage(this.deadline);
     }
 }
