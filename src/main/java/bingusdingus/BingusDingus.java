@@ -46,7 +46,7 @@ public class BingusDingus {
 
         return switch (commandType) {
             case BYE -> ui.showGoodbye();
-            case LIST -> ui.showTasks(taskList);
+            case LIST -> handleListCommand();
             case FIND -> handleFindCommand(input);
             case MARK, UNMARK -> handleMarkCommand(input, commandType);
             case DELETE -> handleDeleteCommand(input);
@@ -54,6 +54,14 @@ public class BingusDingus {
             case TASK -> handleAddCommand(input);
             case UNKNOWN -> ui.showInvalidCommand(INVALID_COMMAND_MESSAGE);
         };
+    }
+
+    /** Displays the task list and reports when saved tasks could not be loaded. */
+    private String handleListCommand() {
+        if (taskList.hasStorageLoadError()) {
+            return ui.showStorageLoadError() + "\n" + ui.showTasks(taskList);
+        }
+        return ui.showTasks(taskList);
     }
 
     /** Handles a find command and displays the matching tasks. */
@@ -144,9 +152,10 @@ public class BingusDingus {
             taskList.add(task);
             lastUndo = () -> taskList.remove(taskIndex);
             return ui.showTaskAdded(taskList.get(taskList.size() - 1), taskList.size());
-        } catch (InvalidTaskCommandException | IllegalStateException e) {
-            return e instanceof InvalidTaskCommandException
-                    ? ui.showInvalidCommand(e.getMessage()) : ui.showStorageError();
+        } catch (InvalidTaskCommandException | IllegalArgumentException e) {
+            return ui.showInvalidCommand(e.getMessage());
+        } catch (IllegalStateException e) {
+            return ui.showStorageError();
         }
     }
 

@@ -7,8 +7,12 @@ public class Task {
 
     /** Creates an incomplete task. */
     public Task(String description) {
-        // Every task must have a meaningful description for display and storage.
-        assert description != null && !description.isBlank();
+        if (description == null || description.isBlank()) {
+            throw new IllegalArgumentException("Task description cannot be blank");
+        }
+        if (description.contains("|") || description.contains("\n") || description.contains("\r")) {
+            throw new IllegalArgumentException("Task description contains an unsupported character");
+        }
         this.description = description;
         this.isDone = false;
     }

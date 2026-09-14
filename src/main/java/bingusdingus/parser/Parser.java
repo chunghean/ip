@@ -90,26 +90,38 @@ public class Parser {
         if (description.isEmpty()) {
             throw new InvalidTaskCommandException("what todo?");
         }
-        return new Todo(description);
+        try {
+            return new Todo(description);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidTaskCommandException(e.getMessage());
+        }
     }
 
     /** Parses a deadline command into a deadline task. */
     private Task parseDeadline(String command) throws InvalidTaskCommandException {
-        String[] parts = command.substring(9).trim().split("/by", 2);
+        String remainder = command.substring(9);
+        if (countOccurrences(remainder, "/by") != 1) {
+            throw new InvalidTaskCommandException("deadline requires exactly one /by parameter");
+        }
+        String[] parts = remainder.split("/by", -1);
         if (parts.length != 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
             throw new InvalidTaskCommandException("deadline requires a description and a date");
         }
         try {
             return new Deadline(parts[0].trim(), parts[1].trim());
-        } catch (DateTimeParseException e) {
+        } catch (DateTimeParseException | IllegalArgumentException e) {
             throw new InvalidTaskCommandException("deadline date/time must use yyyy-mm-dd or d/M/yyyy HHmm");
         }
     }
 
     /** Parses an event command into an event task. */
     private Task parseEvent(String command) throws InvalidTaskCommandException {
-        String[] fromParts = command.substring(6).trim().split("/from", 2);
-        String[] toParts = fromParts.length == 2 ? fromParts[1].split("/to", 2) : new String[0];
+        String remainder = command.substring(6);
+        if (countOccurrences(remainder, "/from") != 1 || countOccurrences(remainder, "/to") != 1) {
+            throw new InvalidTaskCommandException("event requires exactly one /from and one /to parameter");
+        }
+        String[] fromParts = remainder.split("/from", -1);
+        String[] toParts = fromParts.length == 2 ? fromParts[1].split("/to", -1) : new String[0];
         if (fromParts.length != 2 || toParts.length != 2
                 || fromParts[0].trim().isEmpty() || toParts[0].trim().isEmpty()
                 || toParts[1].trim().isEmpty()) {
@@ -120,5 +132,16 @@ public class Parser {
         } catch (DateTimeParseException | IllegalArgumentException e) {
             throw new InvalidTaskCommandException("event date/time must use yyyy-mm-dd or d/M/yyyy HHmm");
         }
+    }
+
+    /** Returns the number of occurrences of a parameter marker in the supplied text. */
+    private int countOccurrences(String text, String marker) {
+        int count = 0;
+        int position = 0;
+        while ((position = text.indexOf(marker, position)) >= 0) {
+            count++;
+            position += marker.length();
+        }
+        return count;
     }
 }

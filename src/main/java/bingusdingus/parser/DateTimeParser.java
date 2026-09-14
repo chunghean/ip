@@ -40,7 +40,11 @@ public final class DateTimeParser {
      * @throws DateTimeParseException if the value is not in a supported format.
      */
     public static LocalDateTime parse(String text) {
-        String value = text == null ? "" : text.trim();
+        if (text == null || text.isBlank() || !text.equals(text.trim())) {
+            throw new DateTimeParseException("Date/time must not be blank or padded", text == null ? "" : text, 0);
+        }
+
+        String value = text;
         for (DateTimeFormatter formatter : DATE_TIME_FORMATS) {
             try {
                 return LocalDateTime.parse(value, formatter);
@@ -60,10 +64,18 @@ public final class DateTimeParser {
             }
         }
 
+        throw new DateTimeParseException("Unsupported date/time format", value, 0);
+    }
+
+    /** Parses the ISO date/time representation written by task storage. */
+    public static LocalDateTime parseStorage(String text) {
+        if (text == null || text.isBlank()) {
+            throw new DateTimeParseException("Stored date/time must not be blank", text == null ? "" : text, 0);
+        }
         try {
-            return LocalDateTime.parse(value);
-        } catch (DateTimeParseException ignored) {
-            return LocalDate.parse(value).atStartOfDay();
+            return LocalDateTime.parse(text);
+        } catch (DateTimeParseException e) {
+            throw new DateTimeParseException("Invalid stored date/time", text, 0, e);
         }
     }
 

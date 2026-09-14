@@ -74,6 +74,16 @@ class TaskListTest {
     }
 
     @Test
+    void taskList_rejectsDuplicateTasksRegardlessOfCompletionState() {
+        TaskList taskList = new TaskList();
+        taskList.add(new Todo("buy milk"));
+        taskList.markAsDone(0);
+
+        assertThrows(IllegalArgumentException.class, () -> taskList.add(new Todo("buy milk")));
+        assertEquals(1, taskList.size());
+    }
+
+    @Test
     void taskList_findReturnsCaseInsensitiveDescriptionMatches() {
         TaskList taskList = new TaskList();
         taskList.add(new Todo("buy milk"));

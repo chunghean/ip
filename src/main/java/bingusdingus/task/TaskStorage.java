@@ -10,12 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import bingusdingus.parser.DateTimeParser;
+
 /** Saves and loads tasks using the Bingus Dingus storage format. */
 public class TaskStorage {
     private static final Path STORAGE_PATH = Path.of(".", "data", "bingusdingus.txt");
 
     /** Saves the supplied tasks to disk, replacing the previous contents. */
     public void save(List<Task> tasks) {
+        if (tasks == null) {
+            throw new IllegalArgumentException("Tasks cannot be null");
+        }
         try {
             Files.createDirectories(STORAGE_PATH.getParent());
             Files.write(STORAGE_PATH,
@@ -44,8 +49,7 @@ public class TaskStorage {
                 }
             }
         } catch (IOException | SecurityException e) {
-            // A damaged or inaccessible storage file should not prevent startup.
-            return List.of();
+            throw new IllegalStateException("Unable to load tasks from " + STORAGE_PATH, e);
         }
         return loadedTasks;
     }
@@ -117,12 +121,13 @@ public class TaskStorage {
     /** Creates a deadline task from normalized stored fields. */
     private Task parseStoredDeadline(String[] parts) {
         return parts.length == 4 && !parts[2].isBlank() && !parts[3].isBlank()
-                ? new Deadline(parts[2], parts[3]) : null;
+                ? new Deadline(parts[2], DateTimeParser.parseStorage(parts[3])) : null;
     }
 
     /** Creates an event task from normalized stored fields. */
     private Task parseStoredEvent(String[] parts) {
         return parts.length == 5 && !parts[2].isBlank() && !parts[3].isBlank() && !parts[4].isBlank()
-                ? new Event(parts[2], parts[3], parts[4]) : null;
+                ? new Event(parts[2], DateTimeParser.parseStorage(parts[3]),
+                        DateTimeParser.parseStorage(parts[4])) : null;
     }
 }

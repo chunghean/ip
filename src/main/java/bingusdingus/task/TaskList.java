@@ -9,18 +9,26 @@ import java.util.stream.IntStream;
 public class TaskList {
     private final ArrayList<Task> tasks;
     private final TaskStorage storage;
+    private boolean hasStorageLoadError;
 
     /** Creates an empty task list. */
     public TaskList() {
         tasks = new ArrayList<>();
         storage = new TaskStorage();
-        tasks.addAll(storage.load());
+        try {
+            tasks.addAll(storage.load());
+        } catch (IllegalStateException e) {
+            hasStorageLoadError = true;
+        }
     }
 
     /** Adds a task to the end of the list. */
     public void add(Task task) {
         if (task == null) {
             throw new IllegalArgumentException("Cannot add a null task");
+        }
+        if (tasks.stream().anyMatch(existingTask -> haveSameDetails(existingTask, task))) {
+            throw new IllegalArgumentException("A task with the same details already exists");
         }
         int previousSize = tasks.size();
         tasks.add(task);
@@ -58,6 +66,10 @@ public class TaskList {
     public void insert(int index, Task task) {
         if (task == null) {
             throw new IllegalArgumentException("Cannot insert a null task");
+        }
+
+        if (tasks.stream().anyMatch(existingTask -> haveSameDetails(existingTask, task))) {
+            throw new IllegalArgumentException("A task with the same details already exists");
         }
 
         tasks.add(index, task);
@@ -130,6 +142,11 @@ public class TaskList {
         return tasks.size();
     }
 
+    /** Returns whether the task storage could not be read during initialization. */
+    public boolean hasStorageLoadError() {
+        return hasStorageLoadError;
+    }
+
     /** Returns the zero-based indexes of tasks whose descriptions contain the keyword. */
     public List<Integer> findIndexes(String keyword) {
         // Search results must refer only to valid positions in the current list.
@@ -149,5 +166,12 @@ public class TaskList {
      */
     private void save() {
         storage.save(tasks);
+    }
+
+    /** Returns whether two tasks have the same type and user-visible details. */
+    private boolean haveSameDetails(Task firstTask, Task secondTask) {
+        String firstFormat = firstTask.toFileFormat().replaceFirst("\\| [01] \\|", "| status |");
+        String secondFormat = secondTask.toFileFormat().replaceFirst("\\| [01] \\|", "| status |");
+        return firstFormat.equals(secondFormat);
     }
 }

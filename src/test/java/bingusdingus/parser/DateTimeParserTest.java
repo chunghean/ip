@@ -19,13 +19,14 @@ class DateTimeParserTest {
         assertEquals(LocalDateTime.of(2019, 6, 6, 0, 0),
                 DateTimeParser.parse("2019-06-06"));
         assertEquals(LocalDateTime.of(2019, 8, 6, 14, 30),
-                DateTimeParser.parse("2019-08-06T14:30"));
+                DateTimeParser.parseStorage("2019-08-06T14:30"));
     }
 
     @Test
     void parse_rejectsInvalidAndNullValues() {
         assertThrows(DateTimeParseException.class, () -> DateTimeParser.parse("31/02/2019"));
         assertThrows(DateTimeParseException.class, () -> DateTimeParser.parse(null));
+        assertThrows(DateTimeParseException.class, () -> DateTimeParser.parse("2019-08-06T14:30"));
     }
 
     @Test

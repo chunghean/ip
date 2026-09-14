@@ -93,4 +93,16 @@ class ParserTest {
                 InvalidTaskCommandException.class, () -> parser.parseTask("todo buy milk "));
         assertEquals("I've got no idea watchu talkin' about", trailingSpace.getMessage());
     }
+
+    @Test
+    void parseTask_rejectsDuplicatedParametersAndUnsupportedDescriptionCharacters() {
+        InvalidTaskCommandException duplicatedParameter = assertThrows(
+                InvalidTaskCommandException.class,
+                () -> parser.parseTask("deadline return book /by 2026-09-02 /by 2026-09-03"));
+        assertEquals("deadline requires exactly one /by parameter", duplicatedParameter.getMessage());
+
+        InvalidTaskCommandException unsupportedCharacter = assertThrows(
+                InvalidTaskCommandException.class, () -> parser.parseTask("todo task | backup"));
+        assertEquals("Task description contains an unsupported character", unsupportedCharacter.getMessage());
+    }
 }

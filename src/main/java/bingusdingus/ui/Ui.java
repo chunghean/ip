@@ -114,4 +114,9 @@ public class Ui {
     public String showStorageError() {
         return "I couldn't save your tasks. Your latest change was not kept.";
     }
+
+    /** Displays an error when saved tasks cannot be read at startup. */
+    public String showStorageLoadError() {
+        return "I couldn't read your saved tasks. They were not loaded.";
+    }
 }
