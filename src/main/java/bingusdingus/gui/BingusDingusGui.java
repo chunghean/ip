@@ -23,6 +23,7 @@ public class BingusDingusGui extends Application {
             BorderPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            stage.setTitle("Bingus Dingus");
 
             stage.setMinHeight(620);
             stage.setMinWidth(417);
