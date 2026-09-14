@@ -24,12 +24,7 @@ public class TaskList {
 
     /** Adds a task to the end of the list. */
     public void add(Task task) {
-        if (task == null) {
-            throw new IllegalArgumentException("Cannot add a null task");
-        }
-        if (tasks.stream().anyMatch(existingTask -> haveSameDetails(existingTask, task))) {
-            throw new IllegalArgumentException("A task with the same details already exists");
-        }
+        validateNewTask(task, "Cannot add a null task");
         int previousSize = tasks.size();
         tasks.add(task);
         // Adding must append exactly one task and preserve the caller's task object.
@@ -54,13 +49,7 @@ public class TaskList {
 
     /** Inserts a task at the specified zero-based index and saves the list. */
     public void insert(int index, Task task) {
-        if (task == null) {
-            throw new IllegalArgumentException("Cannot insert a null task");
-        }
-
-        if (tasks.stream().anyMatch(existingTask -> haveSameDetails(existingTask, task))) {
-            throw new IllegalArgumentException("A task with the same details already exists");
-        }
+        validateNewTask(task, "Cannot insert a null task");
 
         tasks.add(index, task);
         saveWithRollback(() -> tasks.remove(index));
@@ -142,6 +131,16 @@ public class TaskList {
         } catch (IllegalStateException e) {
             rollback.run();
             throw e;
+        }
+    }
+
+    /** Validates that a task can be added without duplicating an existing task. */
+    private void validateNewTask(Task task, String nullTaskMessage) {
+        if (task == null) {
+            throw new IllegalArgumentException(nullTaskMessage);
+        }
+        if (tasks.stream().anyMatch(existingTask -> haveSameDetails(existingTask, task))) {
+            throw new IllegalArgumentException("A task with the same details already exists");
         }
     }
 
