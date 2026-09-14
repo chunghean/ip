@@ -14,6 +14,11 @@ import bingusdingus.parser.DateTimeParser;
 
 /** Saves and loads tasks using the Bingus Dingus storage format. */
 public class TaskStorage {
+    private static final String TODO_TYPE = "T";
+    private static final String DEADLINE_TYPE = "D";
+    private static final String EVENT_TYPE = "E";
+    private static final String INCOMPLETE_STATUS = "0";
+    private static final String COMPLETE_STATUS = "1";
     private static final Path STORAGE_PATH = Path.of(".", "data", "bingusdingus.txt");
 
     /** Saves the supplied tasks to disk, replacing the previous contents. */
@@ -69,7 +74,7 @@ public class TaskStorage {
             task = null;
         }
 
-        if (task != null && parts[1].equals("1")) {
+        if (task != null && parts[1].equals(COMPLETE_STATUS)) {
             task.markAsDone();
         }
         return task;
@@ -96,17 +101,17 @@ public class TaskStorage {
     /** Returns whether a stored status represents an incomplete or completed task. */
     private boolean isValidStatus(String status) {
         String normalizedStatus = status.trim();
-        return normalizedStatus.equals("0") || normalizedStatus.equals("1");
+        return normalizedStatus.equals(INCOMPLETE_STATUS) || normalizedStatus.equals(COMPLETE_STATUS);
     }
 
     /** Creates a task from normalized stored fields, returning null for an invalid record. */
     private Task createStoredTask(String[] parts) {
         switch (parts[0]) {
-            case "T":
+            case TODO_TYPE:
                 return parseStoredTodo(parts);
-            case "D":
+            case DEADLINE_TYPE:
                 return parseStoredDeadline(parts);
-            case "E":
+            case EVENT_TYPE:
                 return parseStoredEvent(parts);
             default:
                 return null;
@@ -115,19 +120,36 @@ public class TaskStorage {
 
     /** Creates a todo task from normalized stored fields. */
     private Task parseStoredTodo(String[] parts) {
-        return parts.length == 3 && !parts[2].isBlank() ? new Todo(parts[2]) : null;
+        if (parts.length != 3 || !hasNonBlankFields(parts, 2)) {
+            return null;
+        }
+        return new Todo(parts[2]);
     }
 
     /** Creates a deadline task from normalized stored fields. */
     private Task parseStoredDeadline(String[] parts) {
-        return parts.length == 4 && !parts[2].isBlank() && !parts[3].isBlank()
-                ? new Deadline(parts[2], DateTimeParser.parseStorage(parts[3])) : null;
+        if (parts.length != 4 || !hasNonBlankFields(parts, 2)) {
+            return null;
+        }
+        return new Deadline(parts[2], DateTimeParser.parseStorage(parts[3]));
     }
 
     /** Creates an event task from normalized stored fields. */
     private Task parseStoredEvent(String[] parts) {
-        return parts.length == 5 && !parts[2].isBlank() && !parts[3].isBlank() && !parts[4].isBlank()
-                ? new Event(parts[2], DateTimeParser.parseStorage(parts[3]),
-                        DateTimeParser.parseStorage(parts[4])) : null;
+        if (parts.length != 5 || !hasNonBlankFields(parts, 2)) {
+            return null;
+        }
+        return new Event(parts[2], DateTimeParser.parseStorage(parts[3]),
+                DateTimeParser.parseStorage(parts[4]));
+    }
+
+    /** Returns whether all stored fields from the specified index are non-blank. */
+    private boolean hasNonBlankFields(String[] parts, int startIndex) {
+        for (int i = startIndex; i < parts.length; i++) {
+            if (parts[i].isBlank()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
