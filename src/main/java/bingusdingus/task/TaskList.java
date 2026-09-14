@@ -34,12 +34,7 @@ public class TaskList {
         tasks.add(task);
         // Adding must append exactly one task and preserve the caller's task object.
         assert tasks.size() == previousSize + 1 && tasks.get(previousSize) == task;
-        try {
-            save();
-        } catch (IllegalStateException e) {
-            tasks.remove(tasks.size() - 1);
-            throw e;
-        }
+        saveWithRollback(() -> tasks.remove(tasks.size() - 1));
     }
 
     /** Returns the task at the specified zero-based index. */
@@ -53,12 +48,7 @@ public class TaskList {
         Task removedTask = tasks.remove(index);
         // A successful removal changes the list size by exactly one.
         assert tasks.size() == previousSize - 1;
-        try {
-            save();
-        } catch (IllegalStateException e) {
-            tasks.add(index, removedTask);
-            throw e;
-        }
+        saveWithRollback(() -> tasks.add(index, removedTask));
         return removedTask;
     }
 
@@ -73,12 +63,7 @@ public class TaskList {
         }
 
         tasks.add(index, task);
-        try {
-            save();
-        } catch (IllegalStateException e) {
-            tasks.remove(index);
-            throw e;
-        }
+        saveWithRollback(() -> tasks.remove(index));
     }
 
     /** Marks the task at the specified zero-based index as done and saves the list. */
@@ -148,6 +133,16 @@ public class TaskList {
      */
     private void save() {
         storage.save(tasks);
+    }
+
+    /** Saves the current list and applies the supplied rollback if saving fails. */
+    private void saveWithRollback(Runnable rollback) {
+        try {
+            save();
+        } catch (IllegalStateException e) {
+            rollback.run();
+            throw e;
+        }
     }
 
     /** Returns whether two tasks have the same type and user-visible details. */
