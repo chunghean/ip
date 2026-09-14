@@ -57,7 +57,9 @@ public class DialogBox extends HBox {
      * @return the configured user dialog box.
      */
     public static DialogBox getUserDialog(String message, Image profilePicture) {
-        return new DialogBox(message, profilePicture);
+        DialogBox dialogBox = new DialogBox(message, profilePicture);
+        dialogBox.getStyleClass().add("user-message");
+        return dialogBox;
     }
 
     /**
@@ -70,6 +72,7 @@ public class DialogBox extends HBox {
     public static DialogBox getBingusDingusDialog(String message, Image profilePicture) {
         var dialogBox = new DialogBox(message, profilePicture);
         dialogBox.flip();
+        dialogBox.getStyleClass().add("assistant-message");
         return dialogBox;
     }
 }

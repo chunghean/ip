@@ -6,7 +6,7 @@ import bingusdingus.BingusDingus;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
@@ -20,7 +20,7 @@ public class BingusDingusGui extends Application {
     public void start(Stage stage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(BingusDingusGui.class.getResource("/view/MainWindow.fxml"));
-            AnchorPane ap = fxmlLoader.load();
+            BorderPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
 

@@ -5,14 +5,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 
-<fx:root alignment="TOP_RIGHT"
+<fx:root alignment="TOP_RIGHT" styleClass="dialog-row"
          maxHeight="1.7976931348623157E308"
          maxWidth="1.7976931348623157E308"
          type="javafx.scene.layout.HBox"
          xmlns="http://javafx.com/javafx/17"
          xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Label fx:id="dialog" text="Label" wrapText="true" minHeight="-Infinity"/>
+        <Label fx:id="dialog" text="Label" wrapText="true" minHeight="-Infinity" styleClass="dialog-message" />
         <ImageView fx:id="displayPicture"
                    fitHeight="90.0"
                    fitWidth="90.0"

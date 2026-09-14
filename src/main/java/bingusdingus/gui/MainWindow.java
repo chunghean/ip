@@ -6,11 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 /** Displays the graphical user interface for Bingus Dingus. */
-public class MainWindow extends AnchorPane {
+public class MainWindow extends BorderPane {
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -29,6 +29,10 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        userInput.textProperty().addListener((observable, oldValue, newValue) ->
+                sendButton.setDisable(newValue == null || newValue.isBlank()));
+        sendButton.setDisable(true);
+        userInput.requestFocus();
     }
 
     /**
@@ -48,11 +52,16 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
+        if (input == null || input.isBlank()) {
+            return;
+        }
+
         String response = bingusDingus.getResponse(input);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getBingusDingusDialog(response, bingusDingusImage)
         );
         userInput.clear();
+        userInput.requestFocus();
     }
 }
