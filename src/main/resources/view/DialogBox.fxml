@@ -14,8 +14,8 @@
     <children>
         <Label fx:id="dialog" text="Label" wrapText="true" minHeight="-Infinity" styleClass="dialog-message" />
         <ImageView fx:id="displayPicture"
-                   fitHeight="90.0"
-                   fitWidth="90.0"
+                   fitHeight="56.0"
+                   fitWidth="56.0"
                    pickOnBounds="true"
                    preserveRatio="true" />
     </children>

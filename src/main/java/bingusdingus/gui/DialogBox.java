@@ -23,8 +23,8 @@ public class DialogBox extends HBox {
     @FXML
     private ImageView displayPicture;
 
-    /** Creates a dialog box containing the supplied message and profile picture. */
-    public DialogBox(String s, Image i) {
+    /** Creates a dialog box containing the supplied message and optional profile picture. */
+    public DialogBox(String message, Image profilePicture) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/DialogBox.fxml"));
             fxmlLoader.setController(this);
@@ -34,9 +34,9 @@ public class DialogBox extends HBox {
             e.printStackTrace();
         }
 
-        dialog.setText(s);
-        displayPicture.setImage(i);
-        displayPicture.setClip(new Circle(45, 45, 45));
+        dialog.setText(message);
+        displayPicture.setImage(profilePicture);
+        displayPicture.setClip(new Circle(28, 28, 28));
     }
 
     /**
@@ -53,11 +53,12 @@ public class DialogBox extends HBox {
      * Returns a dialog box displaying a user's message.
      *
      * @param message the user's message.
-     * @param profilePicture the profile picture to display.
      * @return the configured user dialog box.
      */
-    public static DialogBox getUserDialog(String message, Image profilePicture) {
-        DialogBox dialogBox = new DialogBox(message, profilePicture);
+    public static DialogBox getUserDialog(String message) {
+        DialogBox dialogBox = new DialogBox(message, null);
+        dialogBox.displayPicture.setVisible(false);
+        dialogBox.displayPicture.setManaged(false);
         dialogBox.getStyleClass().add("user-message");
         return dialogBox;
     }

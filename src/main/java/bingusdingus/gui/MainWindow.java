@@ -22,7 +22,6 @@ public class MainWindow extends BorderPane {
 
     private BingusDingus bingusDingus;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.jpg"));
     private Image bingusDingusImage = new Image(this.getClass().getResourceAsStream("/images/BingusDingus.jpg"));
 
     /** Initializes the dialog scroll position binding after the FXML view is loaded. */
@@ -58,7 +57,7 @@ public class MainWindow extends BorderPane {
 
         String response = bingusDingus.getResponse(input);
         dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
+                DialogBox.getUserDialog(input),
                 DialogBox.getBingusDingusDialog(response, bingusDingusImage)
         );
         userInput.clear();
