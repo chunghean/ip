@@ -1,5 +1,7 @@
 package bingusdingus;
 
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import bingusdingus.parser.CommandType;
@@ -27,10 +29,12 @@ public class BingusDingus {
 
     /** Starts the application and processes commands entered by the user. */
     public static void main(String[] args) {
+        configureStandardStreams();
+
         BingusDingus bingusDingus = new BingusDingus();
         System.out.println(bingusDingus.ui.showWelcome());
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
             System.out.println(bingusDingus.getResponse(command));
@@ -38,6 +42,12 @@ public class BingusDingus {
                 break;
             }
         }
+    }
+
+    /** Configures command-line output explicitly so Unicode is preserved across host console encodings. */
+    private static void configureStandardStreams() {
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
+        System.setErr(new PrintStream(System.err, true, StandardCharsets.UTF_8));
     }
 
     /** Executes a command and returns the response for the graphical interface. */
