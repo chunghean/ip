@@ -8,6 +8,7 @@ import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Function;
 
 /** Parses and formats the date and time values used by deadline and event tasks. */
 public final class DateTimeParser {
@@ -44,27 +45,21 @@ public final class DateTimeParser {
             throw new DateTimeParseException("Date/time must not be blank or padded", text == null ? "" : text, 0);
         }
 
-        String value = text;
-        for (DateTimeFormatter formatter : DATE_TIME_FORMATS) {
-            try {
-                return LocalDateTime.parse(value, formatter);
-            } catch (DateTimeParseException ignored) {
-                // Try the next supported format.
-            }
+        LocalDateTime parsedValue = parseWithFormats(text, DATE_TIME_FORMATS,
+                formatter -> LocalDateTime.parse(text, formatter));
+        if (parsedValue != null) {
+            return parsedValue;
         }
 
-        for (DateTimeFormatter formatter : DATE_FORMATS) {
-            try {
-                LocalDateTime parsedValue = LocalDate.parse(value, formatter).atStartOfDay();
-                // Date-only input is normalized to midnight before it reaches a task.
-                assert parsedValue.toLocalTime().equals(LocalTime.MIDNIGHT);
-                return parsedValue;
-            } catch (DateTimeParseException ignored) {
-                // Try the next supported format.
-            }
+        parsedValue = parseWithFormats(text, DATE_FORMATS,
+                formatter -> LocalDate.parse(text, formatter).atStartOfDay());
+        if (parsedValue != null) {
+            // Date-only input is normalized to midnight before it reaches a task.
+            assert parsedValue.toLocalTime().equals(LocalTime.MIDNIGHT);
+            return parsedValue;
         }
 
-        throw new DateTimeParseException("Unsupported date/time format", value, 0);
+        throw new DateTimeParseException("Unsupported date/time format", text, 0);
     }
 
     /** Parses the ISO date/time representation written by task storage. */
@@ -96,5 +91,19 @@ public final class DateTimeParser {
     private static DateTimeFormatter strictFormatter(String pattern) {
         return DateTimeFormatter.ofPattern(pattern, DISPLAY_LOCALE)
                 .withResolverStyle(ResolverStyle.STRICT);
+    }
+
+    /** Returns the first successfully parsed value, or null when all formats fail. */
+    private static LocalDateTime parseWithFormats(String text,
+                                                  List<DateTimeFormatter> formatters,
+                                                  Function<DateTimeFormatter, LocalDateTime> parser) {
+        for (DateTimeFormatter formatter : formatters) {
+            try {
+                return parser.apply(formatter);
+            } catch (DateTimeParseException ignored) {
+                // Try the next supported format.
+            }
+        }
+        return null;
     }
 }
