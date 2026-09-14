@@ -140,7 +140,7 @@ public class BingusDingus {
     private String handleDeleteCommand(String input) {
         try {
             int taskIndex = Integer.parseInt(parser.getCommandArgument(input)) - 1;
-            if (taskIndex < 0 || taskIndex >= taskList.size()) {
+            if (!isValidTaskIndex(taskIndex)) {
                 return ui.showInvalidTaskNumber();
             }
             Task deletedTask = taskList.remove(taskIndex);
