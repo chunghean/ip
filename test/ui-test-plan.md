@@ -406,3 +406,41 @@ Here are the tasks in your list:
 2. [T][ ] second task
 Bye bye!
 ```
+
+## Test case 11: Display the help guide
+
+Aim: Verify that the help command displays the available commands and date/time formats.
+
+Inputs:
+
+```text
+help
+bye
+```
+
+Expected output:
+
+```text
+        .-""""-.
+       /  o  o  \
+      |    ∆     |     BINGUS
+      |  \___/   |     DINGUS
+       \        /
+        '-.__.-'
+Hey there, I'm Bingus Dingusss.
+How can I help ya?
+Commands:
+todo <description>
+deadline <description> /by <date or date-time>
+event <description> /from <start> /to <end>
+list | find | mark | unmark | delete | undo | bye
+
+Date formats:
+2026-09-15
+15/9/2026
+2026-09-15 1800
+15/9/2026 18:00
+
+Times use 24-hour format. Event end times must be later than start times.
+Bye bye!
+```

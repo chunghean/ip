@@ -14,6 +14,7 @@ public class Parser {
     private static final String LIST_COMMAND = "list";
     private static final String UNDO_COMMAND = "undo";
     private static final String FIND_COMMAND = "find";
+    private static final String HELP_COMMAND = "help";
     private static final String MARK_COMMAND = "mark";
     private static final String UNMARK_COMMAND = "unmark";
     private static final String DELETE_COMMAND = "delete";
@@ -38,6 +39,8 @@ public class Parser {
             return CommandType.BYE;
         } else if (command.equals(LIST_COMMAND)) {
             return CommandType.LIST;
+        } else if (command.equals(HELP_COMMAND)) {
+            return CommandType.HELP;
         } else if (command.equals(UNDO_COMMAND)) {
             return CommandType.UNDO;
         } else if (command.startsWith(FIND_COMMAND + " ")) {

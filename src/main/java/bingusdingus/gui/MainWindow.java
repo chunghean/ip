@@ -41,6 +41,8 @@ public class MainWindow extends BorderPane {
      */
     public void setBingusDingus(BingusDingus bingusDingus) {
         this.bingusDingus = bingusDingus;
+        dialogContainer.getChildren().add(
+                DialogBox.getBingusDingusDialog(bingusDingus.getResponse("help"), bingusDingusImage));
     }
 
     /**

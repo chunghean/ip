@@ -57,6 +57,7 @@ public class BingusDingus {
         return switch (commandType) {
             case BYE -> ui.showGoodbye();
             case LIST -> handleListCommand();
+            case HELP -> ui.showHelp();
             case FIND -> handleFindCommand(input);
             case MARK, UNMARK -> handleMarkCommand(input, commandType);
             case DELETE -> handleDeleteCommand(input);

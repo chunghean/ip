@@ -26,6 +26,21 @@ public class Ui {
         return "Bye bye!";
     }
 
+    /** Returns the concise command and date/time guide shown to users. */
+    public String showHelp() {
+        return "Commands:\n"
+                + "todo <description>\n"
+                + "deadline <description> /by <date or date-time>\n"
+                + "event <description> /from <start> /to <end>\n"
+                + "list | find | mark | unmark | delete | undo | bye\n\n"
+                + "Date formats:\n"
+                + "2026-09-15\n"
+                + "15/9/2026\n"
+                + "2026-09-15 1800\n"
+                + "15/9/2026 18:00\n\n"
+                + "Times use 24-hour format. Event end times must be later than start times.";
+    }
+
     /** Displays all tasks with their one-based list numbers. */
     public String showTasks(TaskList taskList) {
         StringBuilder response = new StringBuilder("Here are the tasks in your list:");
