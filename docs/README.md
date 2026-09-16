@@ -1,172 +1,231 @@
 # Bingus Dingus User Guide
 
-Bingus Dingus is a command-line task manager for keeping track of todos,
-deadlines, and events. Start the program and enter one command per line.
+Bingus Dingus is a desktop task manager that helps you keep track of todos,
+deadlines, and events. It uses simple commands in a chat-like interface, so you
+can manage your tasks quickly from the command box.
 
 ## Quick start
 
-Try this example session:
+1. Ensure that [JDK 25](https://www.oracle.com/java/technologies/downloads/)
+   is installed.
+2. Download the latest `bingusdingus.jar` file and place it in a folder of
+   your choice. This folder will be the application's working folder.
+3. Open a terminal in that folder and run the application:
+
+   ```text
+   java -jar bingusdingus.jar
+   ```
+
+4. A Bingus Dingus window should appear. The application displays the `help`
+   message automatically when it starts.
+
+   ![Bingus Dingus user interface](Ui.png)
+
+5. Type a command in the command box and press Enter or click **Send**. For
+   example, try:
+
+   ```text
+   todo buy groceries
+   list
+   mark 1
+   ```
+
+6. Refer to the [Features](#features) section for details about each command.
+
+## Features
+
+### Notes about command format
+
+* Words in `UPPER_CASE` are placeholders that you replace with your own values.
+  For example, in `todo DESCRIPTION`, replace `DESCRIPTION` with `buy groceries`.
+* Command names must be entered in lowercase.
+* Task indexes are positive whole numbers. The index is the number shown beside
+  a task by the `list` command, starting from `1`.
+* Enter one space between command parts. Leading spaces, trailing spaces,
+  repeated spaces, and tab characters are not accepted.
+* Task descriptions must not contain the pipe character (`|`).
+
+### Viewing help: `help`
+
+Displays the available commands and supported date formats. The help message is
+also displayed automatically when the application starts.
+
+Format: `help`
+
+### Adding a todo task: `todo`
+
+Adds a task without a deadline or scheduled time.
+
+Format: `todo DESCRIPTION`
+
+Example:
 
 ```text
-todo Buy groceries
-Got it. I've added this task:
-  [T][ ] Buy groceries
-Now you have 1 tasks in the list.
+todo buy groceries
+```
 
-deadline Submit report /by 2019-10-15
-Got it. I've added this task:
-  [D][ ] Submit report (by: Oct 15 2019)
-Now you have 2 tasks in the list.
+### Adding a deadline: `deadline`
 
-list
+Adds a task with a due date or due date and time.
+
+Format: `deadline DESCRIPTION /by DATE_OR_DATE_TIME`
+
+For accepted date and time formats, see [Date and time formats](#date-and-time-formats).
+
+Example:
+
+```text
+deadline submit report /by 2026-09-15
+```
+
+### Adding an event: `event`
+
+Adds a task with a start and end date or date/time. The end must be later than
+the start.
+
+Format: `event DESCRIPTION /from START /to END`
+
+For accepted date and time formats, see [Date and time formats](#date-and-time-formats).
+
+Example:
+
+```text
+event team meeting /from 2026-09-15 1000 /to 2026-09-15 1100
+```
+
+### Listing tasks: `list`
+
+Shows all tasks in their current order. Each task is shown with a one-based
+index that you can use with `mark`, `unmark`, and `delete`.
+
+Format: `list`
+
+Example output:
+
+```text
 Here are the tasks in your list:
-1. [T][ ] Buy groceries
-2. [D][ ] Submit report (by: Oct 15 2019)
-
-mark 1
-Nice! I've marked this task as done:
-[T][X] Buy groceries
-
-bye
-Bye bye!
+1. [T][ ] buy groceries
+2. [D][ ] submit report (by: Sep 15 2026)
 ```
 
-The task number is shown on the left when you use `list`. Use that number when
-marking, unmarking, or deleting a task.
+`[T]`, `[D]`, and `[E]` identify todo, deadline, and event tasks respectively.
+`[ ]` means that a task is not done, while `[X]` means that it is done.
 
-## Adding tasks
+### Finding tasks: `find`
 
-### bingusdingus.task.Todo
+Finds tasks whose descriptions contain the specified keyword. The search is
+case-insensitive, and the original task indexes are preserved in the results.
 
-Use `todo` followed by a description:
+Format: `find KEYWORD`
+
+Example:
 
 ```text
-todo Buy groceries
+find report
 ```
 
-Output:
+### Marking a task as done: `mark`
 
-```text
-Got it. I've added this task:
-  [T][ ] Buy groceries
-Now you have 1 tasks in the list.
-```
+Marks the specified task as done.
 
-### bingusdingus.task.Deadline
+Format: `mark INDEX`
 
-Use `/by` to separate the description from the deadline:
-
-```text
-deadline Submit report /by 2019-10-15
-```
-
-Output:
-
-```text
-Got it. I've added this task:
-  [D][ ] Submit report (by: Oct 15 2019)
-Now you have 1 tasks in the list.
-```
-
-### bingusdingus.task.Event
-
-Use `/from` and `/to` to specify the start and end times:
-
-```text
-event Team meeting /from 2019-10-15 1000 /to 2019-10-15 1100
-```
-
-Output:
-
-```text
-Got it. I've added this task:
-  [E][ ] Team meeting (from: Oct 15 2019 10:00 AM to: Oct 15 2019 11:00 AM)
-Now you have 1 tasks in the list.
-```
-
-## Managing tasks
-
-### List tasks
-
-Use `list` to display all tasks and their current order:
-
-```text
-list
-```
-
-```text
-Here are the tasks in your list:
-1. [T][ ] Buy groceries
-2. [D][ ] Submit report (by: Oct 15 2019)
-```
-
-`[T]`, `[D]`, and `[E]` identify the task type. `[ ]` means not done and
-`[X]` means done.
-
-Dates use `yyyy-MM-dd`, for example `2019-10-15`. Date/times use
-`yyyy-MM-dd HHmm`, for example `2019-10-15 1800`. The compact day/month format
-`2/12/2019 1800` is also accepted and means 2 December 2019 at 6:00 PM. A
-colon may be used in the time, as in `18:00`.
-
-Dates are stored as typed `LocalDateTime` values. Date-only values are displayed
-as `MMM dd yyyy`, such as `Oct 15 2019`; values with a time are displayed with
-that date followed by a 12-hour time, such as `Oct 15 2019 6:00 PM`.
-
-### Mark a task as done
-
-Use `mark` followed by a task number:
+Example:
 
 ```text
 mark 1
 ```
 
-### Mark a task as not done
+### Marking a task as not done: `unmark`
 
-Use `unmark` followed by a task number:
+Marks the specified task as not done.
+
+Format: `unmark INDEX`
+
+Example:
 
 ```text
 unmark 1
 ```
 
-### Delete a task
+### Deleting a task: `delete`
 
-Use `delete` followed by a task number:
+Removes the specified task from the list.
+
+Format: `delete INDEX`
+
+Example:
 
 ```text
 delete 1
 ```
 
-The task is removed, and the remaining number of tasks is displayed.
+### Undoing a change: `undo`
+
+Reverses the most recent successful state-changing command. Bingus Dingus keeps
+one undo action at a time. Adding a task, marking a task, unmarking a task, or
+deleting a task replaces the previous undo action.
+
+Format: `undo`
+
+Example:
+
+```text
+todo buy milk
+undo
+```
+
+## Date and time formats
+
+Deadlines and event start/end values accept the following formats:
+
+| Input | Example |
+| --- | --- |
+| Date with year-month-day | `2026-09-15` |
+| Date with day/month/year | `15/9/2026` |
+| Date and time without a colon | `2026-09-15 1800` |
+| Date and time with a colon | `15/9/2026 18:00` |
+
+Times use the 24-hour clock. For example, `1800` and `18:00` both mean 6:00
+PM. Date-only values are displayed as `MMM dd yyyy`, such as `Sep 15 2026`.
+Values with a time are displayed using a 12-hour clock, such as
+`Sep 15 2026 6:00 PM`.
 
 ## Invalid commands
 
-Commands must include the required information. For example, a deadline needs
-both a description and a date:
+If a command is missing required information or contains an invalid value,
+Bingus Dingus displays an error message and leaves your task list unchanged.
+
+For example, a deadline must include both a description and a date:
 
 ```text
-deadline Submit report
-bingusdingus.task.Deadline requires a description and a date
+deadline submit report
+deadline requires a description and a date
 ```
 
-If a command refers to a task number that does not exist, Bingus Dingus shows:
+If a task index does not exist, Bingus Dingus displays:
 
 ```text
 Sorry, that task number is invalid.
 ```
 
-For `mark`, `unmark`, and `delete`, use a whole-number task index such as `1`
-or `2`.
+## Saving your tasks
 
-## Exiting the application
+Bingus Dingus saves the task list automatically after every successful change.
+The data is stored in `data/bingusdingus.txt` relative to the application
+folder. You do not need to save manually.
 
-Use `bye` to stop the program:
+## Command summary
 
-```text
-bye
-```
-
-Output:
-
-```text
-Bye bye!
-```
+| Action | Format |
+| --- | --- |
+| View help | `help` |
+| Add a todo | `todo DESCRIPTION` |
+| Add a deadline | `deadline DESCRIPTION /by DATE_OR_DATE_TIME` |
+| Add an event | `event DESCRIPTION /from START /to END` |
+| List tasks | `list` |
+| Find tasks | `find KEYWORD` |
+| Mark a task as done | `mark INDEX` |
+| Mark a task as not done | `unmark INDEX` |
+| Delete a task | `delete INDEX` |
+| Undo the latest change | `undo` |
