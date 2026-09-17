@@ -72,7 +72,7 @@ class ParserTest {
 
         InvalidTaskCommandException invalidEventRange = assertThrows(InvalidTaskCommandException.class, () ->
                 parser.parseTask("event meeting /from 2026-09-02 1000 /to 2026-09-02 0900"));
-        assertEquals("event date/time must use yyyy-mm-dd or d/M/yyyy HHmm", invalidEventRange.getMessage());
+        assertEquals("event end date/time must be later than the start date/time", invalidEventRange.getMessage());
     }
 
     @Test

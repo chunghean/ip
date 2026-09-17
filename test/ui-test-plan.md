@@ -106,7 +106,7 @@ Use:
 todo <description>
 deadline <description> /by <date>, or
 event <description> /from <start> /to <end>.
-event date/time must use yyyy-mm-dd or d/M/yyyy HHmm
+event end date/time must be later than the start date/time
 Use:
 todo <description>
 deadline <description> /by <date>, or
