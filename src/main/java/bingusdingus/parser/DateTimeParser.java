@@ -17,12 +17,12 @@ public final class DateTimeParser {
             DateTimeFormatter.ofPattern("MMM dd uuuu", DISPLAY_LOCALE);
     private static final DateTimeFormatter DISPLAY_TIME_FORMAT =
             DateTimeFormatter.ofPattern("h:mm a", DISPLAY_LOCALE);
-    private static final List<DateTimeFormatter> DATE_TIME_FORMATS = List.of(
+    private static final List<DateTimeFormatter> SUPPORTED_DATE_TIME_FORMATS = List.of(
             strictFormatter("d/M/uuuu HHmm"),
             strictFormatter("uuuu-MM-dd HHmm"),
             strictFormatter("d/M/uuuu HH:mm"),
             strictFormatter("uuuu-MM-dd HH:mm"));
-    private static final List<DateTimeFormatter> DATE_FORMATS = List.of(
+    private static final List<DateTimeFormatter> SUPPORTED_DATE_FORMATS = List.of(
             strictFormatter("d/M/uuuu"),
             strictFormatter("uuuu-MM-dd"));
 
@@ -45,13 +45,13 @@ public final class DateTimeParser {
             throw new DateTimeParseException("Date/time must not be blank or padded", text == null ? "" : text, 0);
         }
 
-        LocalDateTime parsedValue = parseWithFormats(text, DATE_TIME_FORMATS,
+        LocalDateTime parsedValue = parseWithFormats(text, SUPPORTED_DATE_TIME_FORMATS,
                 formatter -> LocalDateTime.parse(text, formatter));
         if (parsedValue != null) {
             return parsedValue;
         }
 
-        parsedValue = parseWithFormats(text, DATE_FORMATS,
+        parsedValue = parseWithFormats(text, SUPPORTED_DATE_FORMATS,
                 formatter -> LocalDate.parse(text, formatter).atStartOfDay());
         if (parsedValue != null) {
             // Date-only input is normalized to midnight before it reaches a task.

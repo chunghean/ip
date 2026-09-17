@@ -2,8 +2,8 @@ package bingusdingus.task;
 
 /** Represents a task in the task list. */
 public class Task {
-    private static final String INCOMPLETE_STATUS = "0";
-    private static final String COMPLETE_STATUS = "1";
+    private static final String TASK_STATUS_INCOMPLETE = "0";
+    private static final String TASK_STATUS_COMPLETE = "1";
 
     private final String description;
     private boolean isDone;
@@ -63,7 +63,7 @@ public class Task {
 
     /** Returns the shared storage prefix for this task and the supplied task type. */
     protected String getBaseFileFormat(String taskType) {
-        String status = isDone ? COMPLETE_STATUS : INCOMPLETE_STATUS;
+        String status = isDone ? TASK_STATUS_COMPLETE : TASK_STATUS_INCOMPLETE;
         return taskType + " | " + status + " | " + description;
     }
 }

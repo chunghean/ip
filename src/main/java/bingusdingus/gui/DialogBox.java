@@ -44,9 +44,9 @@ public class DialogBox extends HBox {
      */
     private void flip() {
         this.setAlignment(Pos.TOP_LEFT);
-        ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
-        FXCollections.reverse(tmp);
-        this.getChildren().setAll(tmp);
+        ObservableList<Node> dialogChildren = FXCollections.observableArrayList(this.getChildren());
+        FXCollections.reverse(dialogChildren);
+        this.getChildren().setAll(dialogChildren);
     }
 
     /**
@@ -71,7 +71,7 @@ public class DialogBox extends HBox {
      * @return the configured Bingus Dingus dialog box.
      */
     public static DialogBox getBingusDingusDialog(String message, Image profilePicture) {
-        var dialogBox = new DialogBox(message, profilePicture);
+        DialogBox dialogBox = new DialogBox(message, profilePicture);
         dialogBox.flip();
         dialogBox.getStyleClass().add("assistant-message");
         return dialogBox;

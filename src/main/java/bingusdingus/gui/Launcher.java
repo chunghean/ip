@@ -3,7 +3,7 @@ package bingusdingus.gui;
 import javafx.application.Application;
 
 /**
- * A launcher class to workaround classpath issues.
+ * Launches the graphical application while working around classpath issues.
  */
 public class Launcher {
     /**

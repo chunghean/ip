@@ -14,11 +14,11 @@ import bingusdingus.parser.DateTimeParser;
 
 /** Saves and loads tasks using the Bingus Dingus storage format. */
 public class TaskStorage {
-    private static final String TODO_TYPE = "T";
-    private static final String DEADLINE_TYPE = "D";
-    private static final String EVENT_TYPE = "E";
-    private static final String INCOMPLETE_STATUS = "0";
-    private static final String COMPLETE_STATUS = "1";
+    private static final String TASK_TYPE_TODO = "T";
+    private static final String TASK_TYPE_DEADLINE = "D";
+    private static final String TASK_TYPE_EVENT = "E";
+    private static final String TASK_STATUS_INCOMPLETE = "0";
+    private static final String TASK_STATUS_COMPLETE = "1";
     private static final Path STORAGE_PATH = Path.of(".", "data", "bingusdingus.txt");
 
     /** Saves the supplied tasks to disk, replacing the previous contents. */
@@ -74,7 +74,7 @@ public class TaskStorage {
             task = null;
         }
 
-        if (task != null && parts[1].equals(COMPLETE_STATUS)) {
+        if (task != null && parts[1].equals(TASK_STATUS_COMPLETE)) {
             task.markAsDone();
         }
         return task;
@@ -101,17 +101,18 @@ public class TaskStorage {
     /** Returns whether a stored status represents an incomplete or completed task. */
     private boolean isValidStatus(String status) {
         String normalizedStatus = status.trim();
-        return normalizedStatus.equals(INCOMPLETE_STATUS) || normalizedStatus.equals(COMPLETE_STATUS);
+        return normalizedStatus.equals(TASK_STATUS_INCOMPLETE)
+                || normalizedStatus.equals(TASK_STATUS_COMPLETE);
     }
 
     /** Creates a task from normalized stored fields, returning null for an invalid record. */
     private Task createStoredTask(String[] parts) {
         switch (parts[0]) {
-            case TODO_TYPE:
+            case TASK_TYPE_TODO:
                 return parseStoredTodo(parts);
-            case DEADLINE_TYPE:
+            case TASK_TYPE_DEADLINE:
                 return parseStoredDeadline(parts);
-            case EVENT_TYPE:
+            case TASK_TYPE_EVENT:
                 return parseStoredEvent(parts);
             default:
                 return null;

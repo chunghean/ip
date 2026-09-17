@@ -14,14 +14,14 @@ import javafx.stage.Stage;
  */
 public class BingusDingusGui extends Application {
 
-    private BingusDingus bingusDingus = new BingusDingus();
+    private final BingusDingus bingusDingus = new BingusDingus();
 
     @Override
     public void start(Stage stage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(BingusDingusGui.class.getResource("/view/MainWindow.fxml"));
-            BorderPane ap = fxmlLoader.load();
-            Scene scene = new Scene(ap);
+            BorderPane rootPane = fxmlLoader.load();
+            Scene scene = new Scene(rootPane);
             stage.setScene(scene);
             stage.setTitle("Bingus Dingus");
 

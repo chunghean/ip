@@ -10,17 +10,17 @@ import bingusdingus.task.Todo;
 /** Parses user commands into the appropriate task subtype. */
 public class Parser {
 
-    private static final String BYE_COMMAND = "bye";
-    private static final String LIST_COMMAND = "list";
-    private static final String UNDO_COMMAND = "undo";
-    private static final String FIND_COMMAND = "find";
-    private static final String HELP_COMMAND = "help";
-    private static final String MARK_COMMAND = "mark";
-    private static final String UNMARK_COMMAND = "unmark";
-    private static final String DELETE_COMMAND = "delete";
-    private static final String TODO_COMMAND = "todo";
-    private static final String DEADLINE_COMMAND = "deadline";
-    private static final String EVENT_COMMAND = "event";
+    private static final String COMMAND_BYE = "bye";
+    private static final String COMMAND_LIST = "list";
+    private static final String COMMAND_UNDO = "undo";
+    private static final String COMMAND_FIND = "find";
+    private static final String COMMAND_HELP = "help";
+    private static final String COMMAND_MARK = "mark";
+    private static final String COMMAND_UNMARK = "unmark";
+    private static final String COMMAND_DELETE = "delete";
+    private static final String COMMAND_TODO = "todo";
+    private static final String COMMAND_DEADLINE = "deadline";
+    private static final String COMMAND_EVENT = "event";
 
     private static final String INVALID_COMMAND_MESSAGE = "I've got no idea watchu talkin' about";
 
@@ -35,21 +35,21 @@ public class Parser {
             return CommandType.UNKNOWN;
         }
 
-        if (command.equals(BYE_COMMAND)) {
+        if (command.equals(COMMAND_BYE)) {
             return CommandType.BYE;
-        } else if (command.equals(LIST_COMMAND)) {
+        } else if (command.equals(COMMAND_LIST)) {
             return CommandType.LIST;
-        } else if (command.equals(HELP_COMMAND)) {
+        } else if (command.equals(COMMAND_HELP)) {
             return CommandType.HELP;
-        } else if (command.equals(UNDO_COMMAND)) {
+        } else if (command.equals(COMMAND_UNDO)) {
             return CommandType.UNDO;
-        } else if (command.startsWith(FIND_COMMAND + " ")) {
+        } else if (command.startsWith(COMMAND_FIND + " ")) {
             return CommandType.FIND;
-        } else if (command.startsWith(MARK_COMMAND + " ")) {
+        } else if (command.startsWith(COMMAND_MARK + " ")) {
             return CommandType.MARK;
-        } else if (command.startsWith(UNMARK_COMMAND + " ")) {
+        } else if (command.startsWith(COMMAND_UNMARK + " ")) {
             return CommandType.UNMARK;
-        } else if (command.startsWith(DELETE_COMMAND + " ")) {
+        } else if (command.startsWith(COMMAND_DELETE + " ")) {
             return CommandType.DELETE;
         } else if (getTaskCommand(command) != null) {
             return CommandType.TASK;
@@ -71,15 +71,15 @@ public class Parser {
         }
 
         String taskCommand = getTaskCommand(command);
-        if (TODO_COMMAND.equals(taskCommand)) {
+        if (COMMAND_TODO.equals(taskCommand)) {
             return parseTodo(command);
         }
 
-        if (DEADLINE_COMMAND.equals(taskCommand)) {
+        if (COMMAND_DEADLINE.equals(taskCommand)) {
             return parseDeadline(command);
         }
 
-        if (EVENT_COMMAND.equals(taskCommand)) {
+        if (COMMAND_EVENT.equals(taskCommand)) {
             return parseEvent(command);
         }
 
@@ -102,14 +102,14 @@ public class Parser {
 
     /** Returns the task command keyword, or null when the command is not a task command. */
     private String getTaskCommand(String command) {
-        if (command.startsWith(TODO_COMMAND + " ")) {
-            return TODO_COMMAND;
+        if (command.startsWith(COMMAND_TODO + " ")) {
+            return COMMAND_TODO;
         }
-        if (command.startsWith(DEADLINE_COMMAND + " ")) {
-            return DEADLINE_COMMAND;
+        if (command.startsWith(COMMAND_DEADLINE + " ")) {
+            return COMMAND_DEADLINE;
         }
-        if (command.startsWith(EVENT_COMMAND + " ")) {
-            return EVENT_COMMAND;
+        if (command.startsWith(COMMAND_EVENT + " ")) {
+            return COMMAND_EVENT;
         }
         return null;
     }
