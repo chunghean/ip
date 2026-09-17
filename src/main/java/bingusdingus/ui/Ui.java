@@ -23,7 +23,7 @@ public class Ui {
 
     /** Displays the goodbye message. */
     public String showGoodbye() {
-        return "There's a close button for a reason";
+        return "Goodbye!";
     }
 
     /** Returns the concise command and date/time guide shown to users. */

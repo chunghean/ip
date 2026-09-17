@@ -49,7 +49,7 @@ class UiTest {
                         + "        '-.__.-'\n"
                         + "Hey there, I'm Bingus Dingusss.\n"
                         + "How can I help ya?", ui.showWelcome());
-        assertEquals("There's a close button for a reason", ui.showGoodbye());
+        assertEquals("Goodbye!", ui.showGoodbye());
     }
 
     @Test

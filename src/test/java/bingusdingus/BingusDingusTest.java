@@ -1,6 +1,7 @@
 package bingusdingus;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -96,5 +97,13 @@ class BingusDingusTest {
 
         assertEquals("I've undone your last command.", bingusDingus.getResponse("undo"));
         assertEquals("Here are the tasks in your list:", bingusDingus.getResponse("list"));
+    }
+
+    @Test
+    void byeCommand_returnsGoodbyeResponseAndIsRecognizedAsExitCommand() {
+        BingusDingus bingusDingus = new BingusDingus();
+
+        assertEquals("Goodbye!", bingusDingus.getResponse("bye"));
+        assertTrue(bingusDingus.isByeCommand("bye"));
     }
 }

@@ -38,7 +38,7 @@ public class BingusDingus {
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
             System.out.println(bingusDingus.getResponse(command));
-            if (bingusDingus.parser.parseCommandType(command) == CommandType.BYE) {
+            if (bingusDingus.isByeCommand(command)) {
                 break;
             }
         }
@@ -65,6 +65,11 @@ public class BingusDingus {
             case TASK -> handleAddCommand(input);
             case UNKNOWN -> ui.showInvalidCommand(INVALID_COMMAND_MESSAGE);
         };
+    }
+
+    /** Returns whether the supplied input is the command that closes the application. */
+    public boolean isByeCommand(String input) {
+        return parser.parseCommandType(input) == CommandType.BYE;
     }
 
     /** Displays the task list and reports when saved tasks could not be loaded. */

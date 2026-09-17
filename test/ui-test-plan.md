@@ -2,6 +2,8 @@
 
 This file defines command-line UI test sessions for Bingus Dingus. Each session is run independently and in document order. A failure stops the test run.
 
+The `bye` command must display its farewell response before terminating the application.
+
 ## Test case 1: Add a deadline task
 
 Aim: Verify that a deadline command creates and displays a deadline task with its due date.
@@ -27,7 +29,7 @@ How can I help ya?
 Got it. I've added this task:
   [D][ ] return book (by: Dec 02 2019 6:00 PM)
 Now you have 1 tasks in the list.
-There's a close button for a reason
+Goodbye!
 ```
 
 ## Test case 2: Add an event task
@@ -55,7 +57,7 @@ How can I help ya?
 Got it. I've added this task:
   [E][ ] project meeting (from: Oct 15 2019 2:00 PM to: Oct 15 2019 4:00 PM)
 Now you have 1 tasks in the list.
-There's a close button for a reason
+Goodbye!
 ```
 
 ## Test case 3: Reject malformed task commands
@@ -117,7 +119,7 @@ todo <description>
 deadline <description> /by <date>, or
 event <description> /from <start> /to <end>.
 Here are the tasks in your list:
-There's a close button for a reason
+Goodbye!
 ```
 
 ## Test case 4: Handle invalid task numbers
@@ -153,7 +155,7 @@ Sorry, please specify a valid task number.
 Sorry, that task number is invalid.
 Sorry, that task number is invalid.
 That task has not been marked done yet
-There's a close button for a reason
+Goodbye!
 ```
 
 ## Test case 5: Delete a task
@@ -192,7 +194,7 @@ I've removed this task:
 Now you have 1 tasks in the list.
 Here are the tasks in your list:
 1. [T][ ] return book
-There's a close button for a reason
+Goodbye!
 ```
 
 ## Test case 6: Find tasks by description keyword
@@ -232,7 +234,7 @@ Now you have 3 tasks in the list.
 Here are the matching tasks in your list:
 2. [T][ ] read book
 3. [D][ ] return book (by: Jun 06 2019)
-There's a close button for a reason
+Goodbye!
 ```
 
 ## Test case 7: Save task-list changes to disk
@@ -275,7 +277,7 @@ Nice! I've marked this task as done:
 I've removed this task:
   project meeting
 Now you have 2 tasks in the list.
-There's a close button for a reason
+Goodbye!
 ```
 
 After the session, `data/bingusdingus.txt` should contain:
@@ -312,7 +314,7 @@ How can I help ya?
 Here are the tasks in your list:
 1. [T][X] read book
 2. [D][ ] return book (by: Jun 06 2019)
-There's a close button for a reason
+Goodbye!
 ```
 
 ## Test case 9: Ignore malformed stored tasks
@@ -352,7 +354,7 @@ Here are the tasks in your list:
 1. [T][X] valid todo
 2. [D][ ] valid deadline (by: Oct 15 2019)
 3. [E][X] valid event (from: Oct 15 2019 9:00 AM to: Oct 15 2019 10:00 AM)
-There's a close button for a reason
+Goodbye!
 ```
 
 ## Test case 10: Undo the most recent state-changing command
@@ -404,7 +406,7 @@ There is nothing to undo.
 Here are the tasks in your list:
 1. [T][ ] first task
 2. [T][ ] second task
-There's a close button for a reason
+Goodbye!
 ```
 
 ## Test case 11: Display the help guide
@@ -442,5 +444,5 @@ Date formats:
 15/9/2026 18:00
 
 Times use 24-hour format. Event end times must be later than start times.
-There's a close button for a reason
+Goodbye!
 ```

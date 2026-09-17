@@ -1,6 +1,8 @@
 package bingusdingus.gui;
 
 import bingusdingus.BingusDingus;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -8,9 +10,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 /** Displays the graphical user interface for Bingus Dingus. */
 public class MainWindow extends BorderPane {
+    private static final Duration GOODBYE_DISPLAY_DURATION = Duration.seconds(1);
+
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -63,6 +68,16 @@ public class MainWindow extends BorderPane {
                 DialogBox.getBingusDingusDialog(response, bingusDingusImage)
         );
         userInput.clear();
+
+        if (bingusDingus.isByeCommand(input)) {
+            userInput.setDisable(true);
+            sendButton.setDisable(true);
+            PauseTransition goodbyeDelay = new PauseTransition(GOODBYE_DISPLAY_DURATION);
+            goodbyeDelay.setOnFinished(event -> Platform.exit());
+            goodbyeDelay.play();
+            return;
+        }
+
         userInput.requestFocus();
     }
 }
